@@ -1,4 +1,4 @@
-# WHat do we need?
+# What do we need?
 
 
 # Azure Infrastructure
@@ -9,4 +9,4 @@
   - Migrations to the cloud
   - Upgrades?
 
-# dev container infarastructure
+# dev container infrastructure
