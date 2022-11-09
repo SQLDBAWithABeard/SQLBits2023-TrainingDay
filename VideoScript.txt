@@ -1,0 +1,22 @@
+Rob: Are you a DBA, senior or junior, looking after 1 or 100,000 instances, a developer who interacts with SQL Server, an accidental DBA or you have DevOps in your job title.
+
+Jess: Are you interested in improving your PowerShell skills for SQL Server or reducing the time you and your team spend administering SQL Server.
+
+
+We have both worked with many large estates and at that scale automation is vital to keeping on top of things.
+
+The plan for the training day, is to split it in half and cover two important areas - this is basically two training days in one!
+
+Firstly, we will increase your PowerShell and dbatools automation knowledge by a substantial number of points and dive deep into solving some more challenging estate automation tasks such as
+
+    Updating and patching your SQL Instances with minimal downtime
+    Adding replicas to Availability Groups without effort
+    Advanced migrations for large mission critical databases
+    Integrating database process automation with CI/CD tooling such as GitHub Actions
+    And wherever else the adventure takes us
+    You will learn from two experts, how we have solved the challenges of automating estates at scale and in a performant way.
+
+Then we will level you up with estate validation so that you can be sure everything is in order, and you can easily demonstrate that every instance is in a particular state to any dwarven cleric or provide validation to the elven auditors that your instances pass the CIS SQL security benchmark using dbachecks for example.
+
+What should our friends bring Rob?
+All you need is yourself! Something to take notes, and a laptop would be a bonus so you can follow along with all our examples
