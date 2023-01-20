@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="19" errors="0" failures="0" not-run="40" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2023-01-18" time="16:39:14">
+  <environment user-domain="BEARD-DESKTOP" user="mrrob" machine-name="BEARD-DESKTOP" platform="Microsoft Windows 11 Pro|C:\WINDOWS|\Device\Harddisk3\Partition3" nunit-version="2.5.8.0" cwd="G:\OneDrive\Documents\GitHub\SQLBits2023-TrainingDay" os-version="10.0.22621" clr-version="Unknown" />
+  <culture-info current-culture="en-GB" current-uiculture="en-US" />
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Success" success="True" time="23.83" asserts="0" description="Pester">
+    <results>
+      <test-suite type="TestFixture" name="G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.46.0\internal\tests\00General.tests.ps1" executed="True" result="Success" success="True" time="1.6465" asserts="0" description="G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.46.0\internal\tests\00General.tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="[SQLBits2023-TrainingDay] General" executed="True" result="Success" success="True" time="1.1842" asserts="0" description="[SQLBits2023-TrainingDay] General">
+            <results>
+              <test-suite type="TestFixture" name="[SQLBits2023-TrainingDay] General.Lab deployment successful" executed="True" result="Success" success="True" time="1.1214" asserts="0" description="[SQLBits2023-TrainingDay] General.Lab deployment successful">
+                <results>
+                  <test-suite type="ParameterizedTest" name="[SQLBits2023-TrainingDay] General.Lab deployment successful.[&lt;LabName&gt;] Should return the correct amount of machines" executed="True" result="Success" success="True" time="1.0633" asserts="0" description="[&lt;LabName&gt;] Should return the correct amount of machines">
+                    <results>
+                      <test-case description="[SQLBits2023-TrainingDay] Should return the correct amount of machines" name="[SQLBits2023-TrainingDay] General.Lab deployment successful.[SQLBits2023-TrainingDay] Should return the correct amount of machines" time="1.0633" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.46.0\internal\tests\DC.tests.ps1" executed="True" result="Success" success="True" time="0.0788" asserts="0" description="G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.46.0\internal\tests\DC.tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="[SQLBits2023-TrainingDay] DC" executed="True" result="Success" success="True" time="0.0301" asserts="0" description="[SQLBits2023-TrainingDay] DC">
+            <results>
+              <test-suite type="TestFixture" name="[SQLBits2023-TrainingDay] DC.Role deployment successful" executed="True" result="Success" success="True" time="0.0284" asserts="0" description="[SQLBits2023-TrainingDay] DC.Role deployment successful">
+                <results>
+                  <test-case description="[DC] Should return the correct amount of machines" name="[SQLBits2023-TrainingDay] DC.Role deployment successful.[DC] Should return the correct amount of machines" time="0.0262" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.46.0\internal\tests\FileServer.tests.ps1" executed="True" result="Success" success="True" time="3.36" asserts="0" description="G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.46.0\internal\tests\FileServer.tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="[SQLBits2023-TrainingDay] FileServer" executed="True" result="Success" success="True" time="3.2834" asserts="0" description="[SQLBits2023-TrainingDay] FileServer">
+            <results>
+              <test-suite type="TestFixture" name="[SQLBits2023-TrainingDay] FileServer.Role deployment successful" executed="True" result="Success" success="True" time="3.2804" asserts="0" description="[SQLBits2023-TrainingDay] FileServer.Role deployment successful">
+                <results>
+                  <test-case description="[FileServer] Should return the correct amount of machines" name="[SQLBits2023-TrainingDay] FileServer.Role deployment successful.[FileServer] Should return the correct amount of machines" time="0.0314" asserts="0" success="True" result="Success" executed="True" />
+                  <test-suite type="ParameterizedTest" name="[SQLBits2023-TrainingDay] FileServer.Role deployment successful.[POSHFS1] should have all required WebServer features installed" executed="True" result="Success" success="True" time="3.2462" asserts="0" description="[POSHFS1] should have all required WebServer features installed">
+                    <results>
+                      <test-case description="[POSHFS1] should have all required WebServer features installed" name="[SQLBits2023-TrainingDay] FileServer.Role deployment successful.[POSHFS1] should have all required WebServer features installed(POSHFS1)" time="3.2462" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.46.0\internal\tests\RootDC.tests.ps1" executed="True" result="Success" success="True" time="8.0626" asserts="0" description="G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.46.0\internal\tests\RootDC.tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="[SQLBits2023-TrainingDay] DC Generic" executed="True" result="Success" success="True" time="6.4809" asserts="0" description="[SQLBits2023-TrainingDay] DC Generic">
+            <results>
+              <test-suite type="TestFixture" name="[SQLBits2023-TrainingDay] DC Generic.Role deployment successful" executed="True" result="Success" success="True" time="6.4788" asserts="0" description="[SQLBits2023-TrainingDay] DC Generic.Role deployment successful">
+                <results>
+                  <test-case description="[RootDC] Should return the correct amount of machines" name="[SQLBits2023-TrainingDay] DC Generic.Role deployment successful.[RootDC] Should return the correct amount of machines" time="0.0358" asserts="0" success="True" result="Success" executed="True" />
+                  <test-suite type="ParameterizedTest" name="[SQLBits2023-TrainingDay] DC Generic.Role deployment successful.JessDC1 should have ADWS running" executed="True" result="Success" success="True" time="3.2583" asserts="0" description="JessDC1 should have ADWS running">
+                    <results>
+                      <test-case description="JessDC1 should have ADWS running" name="[SQLBits2023-TrainingDay] DC Generic.Role deployment successful.JessDC1 should have ADWS running(JessDC1)" time="1.6202" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="BeardDC2 should have ADWS running" name="[SQLBits2023-TrainingDay] DC Generic.Role deployment successful.BeardDC2 should have ADWS running" time="1.6381" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="[SQLBits2023-TrainingDay] DC Generic.Role deployment successful.JessDC1 should respond to ADWS calls" executed="True" result="Success" success="True" time="3.1762" asserts="0" description="JessDC1 should respond to ADWS calls">
+                    <results>
+                      <test-case description="JessDC1 should respond to ADWS calls" name="[SQLBits2023-TrainingDay] DC Generic.Role deployment successful.JessDC1 should respond to ADWS calls(JessDC1)" time="1.4029" asserts="0" success="True" result="Success" executed="True" />
+                      <test-case description="BeardDC2 should respond to ADWS calls" name="[SQLBits2023-TrainingDay] DC Generic.Role deployment successful.BeardDC2 should respond to ADWS calls" time="1.7733" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="[SQLBits2023-TrainingDay] RootDC specific" executed="True" result="Success" success="True" time="7.9234" asserts="0" description="[SQLBits2023-TrainingDay] RootDC specific">
+            <results>
+              <test-suite type="ParameterizedTest" name="[SQLBits2023-TrainingDay] RootDC specific.JessDC1 should hold PDC emulator FSMO role" executed="True" result="Success" success="True" time="1.4404" asserts="0" description="JessDC1 should hold PDC emulator FSMO role">
+                <results>
+                  <test-case description="JessDC1 should hold PDC emulator FSMO role" name="[SQLBits2023-TrainingDay] RootDC specific.JessDC1 should hold PDC emulator FSMO role(JessDC1)" time="1.4404" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.46.0\internal\tests\SQLServer2016.tests.ps1" executed="True" result="Success" success="True" time="3.291" asserts="0" description="G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.46.0\internal\tests\SQLServer2016.tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="[SQLBits2023-TrainingDay] SQLServer2016" executed="True" result="Success" success="True" time="3.2133" asserts="0" description="[SQLBits2023-TrainingDay] SQLServer2016">
+            <results>
+              <test-suite type="TestFixture" name="[SQLBits2023-TrainingDay] SQLServer2016.Role deployment successful" executed="True" result="Success" success="True" time="3.2116" asserts="0" description="[SQLBits2023-TrainingDay] SQLServer2016.Role deployment successful">
+                <results>
+                  <test-case description="[SQLServer2016] Should return the correct amount of machines" name="[SQLBits2023-TrainingDay] SQLServer2016.Role deployment successful.[SQLServer2016] Should return the correct amount of machines" time="0.0192" asserts="0" success="True" result="Success" executed="True" />
+                  <test-suite type="ParameterizedTest" name="[SQLBits2023-TrainingDay] SQLServer2016.Role deployment successful.[Jess2016] Instance(s) should be running" executed="True" result="Success" success="True" time="1.474" asserts="0" description="[Jess2016] Instance(s) should be running">
+                    <results>
+                      <test-case description="[Jess2016] Instance(s) should be running" name="[SQLBits2023-TrainingDay] SQLServer2016.Role deployment successful.[Jess2016] Instance(s) should be running(Jess2016)" time="1.474" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="[SQLBits2023-TrainingDay] SQLServer2016.Role deployment successful.[Jess2016] Should have SQL Server 2016 installed" executed="True" result="Success" success="True" time="1.7165" asserts="0" description="[Jess2016] Should have SQL Server 2016 installed">
+                    <results>
+                      <test-case description="[Jess2016] Should have SQL Server 2016 installed" name="[SQLBits2023-TrainingDay] SQLServer2016.Role deployment successful.[Jess2016] Should have SQL Server 2016 installed(Jess2016)" time="1.7165" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.46.0\internal\tests\SQLServer2017.tests.ps1" executed="True" result="Success" success="True" time="3.0216" asserts="0" description="G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.46.0\internal\tests\SQLServer2017.tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="[SQLBits2023-TrainingDay] SQLServer2017" executed="True" result="Success" success="True" time="2.9547" asserts="0" description="[SQLBits2023-TrainingDay] SQLServer2017">
+            <results>
+              <test-suite type="TestFixture" name="[SQLBits2023-TrainingDay] SQLServer2017.Role deployment successful" executed="True" result="Success" success="True" time="2.9531" asserts="0" description="[SQLBits2023-TrainingDay] SQLServer2017.Role deployment successful">
+                <results>
+                  <test-case description="[SQLServer2017] Should return the correct amount of machines" name="[SQLBits2023-TrainingDay] SQLServer2017.Role deployment successful.[SQLServer2017] Should return the correct amount of machines" time="0.0245" asserts="0" success="True" result="Success" executed="True" />
+                  <test-suite type="ParameterizedTest" name="[SQLBits2023-TrainingDay] SQLServer2017.Role deployment successful.[Jess2017] Instance(s) should be running" executed="True" result="Success" success="True" time="1.2139" asserts="0" description="[Jess2017] Instance(s) should be running">
+                    <results>
+                      <test-case description="[Jess2017] Instance(s) should be running" name="[SQLBits2023-TrainingDay] SQLServer2017.Role deployment successful.[Jess2017] Instance(s) should be running(Jess2017)" time="1.2139" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="[SQLBits2023-TrainingDay] SQLServer2017.Role deployment successful.[Jess2017] Should have SQL Server 2017 installed" executed="True" result="Success" success="True" time="1.7128" asserts="0" description="[Jess2017] Should have SQL Server 2017 installed">
+                    <results>
+                      <test-case description="[Jess2017] Should have SQL Server 2017 installed" name="[SQLBits2023-TrainingDay] SQLServer2017.Role deployment successful.[Jess2017] Should have SQL Server 2017 installed(Jess2017)" time="1.7128" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.46.0\internal\tests\SQLServer2019.tests.ps1" executed="True" result="Success" success="True" time="2.9875" asserts="0" description="G:\OneDrive\Documents\powershell\Modules\AutomatedLabTest\5.46.0\internal\tests\SQLServer2019.tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="[SQLBits2023-TrainingDay] SQLServer2019" executed="True" result="Success" success="True" time="2.9312" asserts="0" description="[SQLBits2023-TrainingDay] SQLServer2019">
+            <results>
+              <test-suite type="TestFixture" name="[SQLBits2023-TrainingDay] SQLServer2019.Role deployment successful" executed="True" result="Success" success="True" time="2.9295" asserts="0" description="[SQLBits2023-TrainingDay] SQLServer2019.Role deployment successful">
+                <results>
+                  <test-case description="[SQLServer2019] Should return the correct amount of machines" name="[SQLBits2023-TrainingDay] SQLServer2019.Role deployment successful.[SQLServer2019] Should return the correct amount of machines" time="0.0216" asserts="0" success="True" result="Success" executed="True" />
+                  <test-suite type="ParameterizedTest" name="[SQLBits2023-TrainingDay] SQLServer2019.Role deployment successful.[Jess2019] Instance(s) should be running" executed="True" result="Success" success="True" time="1.2859" asserts="0" description="[Jess2019] Instance(s) should be running">
+                    <results>
+                      <test-case description="[Jess2019] Instance(s) should be running" name="[SQLBits2023-TrainingDay] SQLServer2019.Role deployment successful.[Jess2019] Instance(s) should be running(Jess2019)" time="1.2859" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                  <test-suite type="ParameterizedTest" name="[SQLBits2023-TrainingDay] SQLServer2019.Role deployment successful.[Jess2019] Should have SQL Server 2019 installed" executed="True" result="Success" success="True" time="1.62" asserts="0" description="[Jess2019] Should have SQL Server 2019 installed">
+                    <results>
+                      <test-case description="[Jess2019] Should have SQL Server 2019 installed" name="[SQLBits2023-TrainingDay] SQLServer2019.Role deployment successful.[Jess2019] Should have SQL Server 2019 installed(Jess2019)" time="1.62" asserts="0" success="True" result="Success" executed="True" />
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>

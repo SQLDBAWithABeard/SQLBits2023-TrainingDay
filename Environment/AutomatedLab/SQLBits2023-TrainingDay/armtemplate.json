@@ -1,0 +1,1486 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {},
+  "resources": [
+    {
+      "tags": {
+        "AutomatedLab": "SQLBits2023-TrainingDay",
+        "CreationTime": "2023-01-18 15:02:21"
+      },
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "NecessaryPorts",
+            "properties": {
+              "protocol": "TCP",
+              "access": "Allow",
+              "direction": "Inbound",
+              "sourcePortRanges": [],
+              "destinationPortRanges": [
+                "22",
+                "3389",
+                "5985",
+                "5986"
+              ],
+              "sourceAddressPrefixes": [],
+              "sourcePortRange": "*",
+              "destinationAddressPrefixes": [],
+              "destinationAddressPrefix": "VirtualNetwork",
+              "sourceAddressPrefix": "*",
+              "priority": 100
+            }
+          },
+          {
+            "name": "BastionIn",
+            "properties": {
+              "protocol": "TCP",
+              "access": "Allow",
+              "direction": "Inbound",
+              "sourcePortRanges": [],
+              "destinationPortRanges": [
+                "443"
+              ],
+              "sourceAddressPrefixes": [],
+              "sourcePortRange": "*",
+              "destinationAddressPrefixes": [],
+              "destinationAddressPrefix": "*",
+              "sourceAddressPrefix": "*",
+              "priority": 101
+            }
+          },
+          {
+            "name": "BastionMgmtOut",
+            "properties": {
+              "protocol": "TCP",
+              "access": "Allow",
+              "direction": "Outbound",
+              "sourcePortRanges": [],
+              "destinationPortRanges": [
+                "443"
+              ],
+              "sourceAddressPrefixes": [],
+              "sourcePortRange": "*",
+              "destinationAddressPrefixes": [],
+              "destinationAddressPrefix": "AzureCloud",
+              "sourceAddressPrefix": "*",
+              "priority": 100
+            }
+          },
+          {
+            "name": "BastionRdsOut",
+            "properties": {
+              "protocol": "TCP",
+              "access": "Allow",
+              "direction": "Outbound",
+              "sourcePortRanges": [],
+              "destinationPortRanges": [
+                "3389",
+                "22"
+              ],
+              "sourceAddressPrefixes": [],
+              "sourcePortRange": "*",
+              "destinationAddressPrefixes": [],
+              "destinationAddressPrefix": "VirtualNetwork",
+              "sourceAddressPrefix": "*",
+              "priority": 101
+            }
+          }
+        ]
+      },
+      "name": "nsg",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2022-07-01"
+    },
+    {
+      "tags": {
+        "AutomatedLab": "SQLBits2023-TrainingDay",
+        "CreationTime": "2023-01-18 15:02:22"
+      },
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "publicIPAllocationMethod": "static",
+        "dnsSettings": {
+          "domainNameLabel": "[concat('azbastion', uniqueString(resourceGroup().id))]"
+        }
+      },
+      "sku": {
+        "name": "Standard"
+      },
+      "name": "0bip",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "apiVersion": "2022-07-01"
+    },
+    {
+      "tags": {
+        "AutomatedLab": "SQLBits2023-TrainingDay",
+        "CreationTime": "2023-01-18 15:02:22"
+      },
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "IpConf",
+            "properties": {
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', '0bip')]"
+              },
+              "subnet": {
+                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'SQLBits2023-TrainingDay','AzureBastionSubnet')]"
+              }
+            }
+          }
+        ]
+      },
+      "name": "bastion0",
+      "type": "Microsoft.Network/bastionHosts",
+      "apiVersion": "2022-07-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualNetworks', 'SQLBits2023-TrainingDay')]",
+        "[resourceId('Microsoft.Network/publicIPAddresses', '0bip')]"
+      ]
+    },
+    {
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "AutomatedLab": "SQLBits2023-TrainingDay",
+        "CreationTime": "2023-01-18 15:02:21"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkSecurityGroups', 'nsg')]"
+      ],
+      "properties": {
+        "subnets": [
+          {
+            "name": "default",
+            "properties": {
+              "addressPrefix": "192.168.2.0/24",
+              "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'nsg')]"
+              }
+            }
+          },
+          {
+            "name": "AzureBastionSubnet",
+            "properties": {
+              "addressPrefix": "192.168.3.0/24",
+              "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'nsg')]"
+              }
+            }
+          }
+        ],
+        "addressSpace": {
+          "addressPrefixes": [
+            "192.168.2.0/23"
+          ]
+        },
+        "dhcpOptions": {
+          "dnsServers": [
+            "192.168.2.10"
+          ]
+        }
+      },
+      "name": "SQLBits2023-TrainingDay",
+      "type": "Microsoft.Network/virtualNetworks",
+      "apiVersion": "2022-07-01"
+    },
+    {
+      "tags": {
+        "CreationTime": "2023-01-18 15:02:22",
+        "Vnet": "SQLBits2023-TrainingDay",
+        "AutomatedLab": "SQLBits2023-TrainingDay"
+      },
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "publicIPAllocationMethod": "static",
+        "dnsSettings": {
+          "domainNameLabel": "[concat('al0-', uniqueString(resourceGroup().id))]"
+        }
+      },
+      "sku": {
+        "name": "Standard"
+      },
+      "name": "lbip0",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "apiVersion": "2022-07-01"
+    },
+    {
+      "name": "lb0",
+      "tags": {
+        "CreationTime": "2023-01-18 15:02:22",
+        "Vnet": "SQLBits2023-TrainingDay",
+        "AutomatedLab": "SQLBits2023-TrainingDay"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/publicIPAddresses', 'lbip0')]"
+      ],
+      "sku": {
+        "name": "Standard"
+      },
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "frontendIPConfigurations": [
+          {
+            "name": "0lbfc",
+            "properties": {
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'lbip0')]"
+              }
+            }
+          }
+        ],
+        "backendAddressPools": [
+          {
+            "name": "0lbbc"
+          }
+        ],
+        "outboundRules": [
+          {
+            "name": "InternetAccess",
+            "properties": {
+              "protocol": "All",
+              "allocatedOutboundPorts": 0,
+              "frontendIPConfigurations": [
+                {
+                  "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', 'lb0', '0lbfc')]"
+                }
+              ],
+              "enableTcpReset": true,
+              "idleTimeoutInMinutes": 4,
+              "backendAddressPool": {
+                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'), '/backendAddressPools/0lbbc')]"
+              }
+            }
+          }
+        ],
+        "inboundNatRules": [
+          {
+            "name": "jessdc1rdpin",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', 'lb0', '0lbfc')]"
+              },
+              "enableFloatingIP": false,
+              "frontendPort": 5001,
+              "backendPort": 3389,
+              "protocol": "Tcp"
+            }
+          },
+          {
+            "name": "jessdc1winrmin",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', 'lb0', '0lbfc')]"
+              },
+              "enableFloatingIP": false,
+              "frontendPort": 5002,
+              "backendPort": 5985,
+              "protocol": "Tcp"
+            }
+          },
+          {
+            "name": "jessdc1winrmhttpsin",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', 'lb0', '0lbfc')]"
+              },
+              "enableFloatingIP": false,
+              "frontendPort": 5003,
+              "backendPort": 5986,
+              "protocol": "Tcp"
+            }
+          },
+          {
+            "name": "jessdc1sshin",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', 'lb0', '0lbfc')]"
+              },
+              "enableFloatingIP": false,
+              "frontendPort": 5004,
+              "backendPort": 22,
+              "protocol": "Tcp"
+            }
+          },
+          {
+            "name": "bearddc2rdpin",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', 'lb0', '0lbfc')]"
+              },
+              "enableFloatingIP": false,
+              "frontendPort": 5005,
+              "backendPort": 3389,
+              "protocol": "Tcp"
+            }
+          },
+          {
+            "name": "bearddc2winrmin",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', 'lb0', '0lbfc')]"
+              },
+              "enableFloatingIP": false,
+              "frontendPort": 5006,
+              "backendPort": 5985,
+              "protocol": "Tcp"
+            }
+          },
+          {
+            "name": "bearddc2winrmhttpsin",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', 'lb0', '0lbfc')]"
+              },
+              "enableFloatingIP": false,
+              "frontendPort": 5007,
+              "backendPort": 5986,
+              "protocol": "Tcp"
+            }
+          },
+          {
+            "name": "bearddc2sshin",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', 'lb0', '0lbfc')]"
+              },
+              "enableFloatingIP": false,
+              "frontendPort": 5008,
+              "backendPort": 22,
+              "protocol": "Tcp"
+            }
+          },
+          {
+            "name": "poshfs1rdpin",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', 'lb0', '0lbfc')]"
+              },
+              "enableFloatingIP": false,
+              "frontendPort": 5009,
+              "backendPort": 3389,
+              "protocol": "Tcp"
+            }
+          },
+          {
+            "name": "poshfs1winrmin",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', 'lb0', '0lbfc')]"
+              },
+              "enableFloatingIP": false,
+              "frontendPort": 5010,
+              "backendPort": 5985,
+              "protocol": "Tcp"
+            }
+          },
+          {
+            "name": "poshfs1winrmhttpsin",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', 'lb0', '0lbfc')]"
+              },
+              "enableFloatingIP": false,
+              "frontendPort": 5011,
+              "backendPort": 5986,
+              "protocol": "Tcp"
+            }
+          },
+          {
+            "name": "poshfs1sshin",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', 'lb0', '0lbfc')]"
+              },
+              "enableFloatingIP": false,
+              "frontendPort": 5012,
+              "backendPort": 22,
+              "protocol": "Tcp"
+            }
+          },
+          {
+            "name": "jess2016rdpin",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', 'lb0', '0lbfc')]"
+              },
+              "enableFloatingIP": false,
+              "frontendPort": 5013,
+              "backendPort": 3389,
+              "protocol": "Tcp"
+            }
+          },
+          {
+            "name": "jess2016winrmin",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', 'lb0', '0lbfc')]"
+              },
+              "enableFloatingIP": false,
+              "frontendPort": 5014,
+              "backendPort": 5985,
+              "protocol": "Tcp"
+            }
+          },
+          {
+            "name": "jess2016winrmhttpsin",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', 'lb0', '0lbfc')]"
+              },
+              "enableFloatingIP": false,
+              "frontendPort": 5015,
+              "backendPort": 5986,
+              "protocol": "Tcp"
+            }
+          },
+          {
+            "name": "jess2016sshin",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', 'lb0', '0lbfc')]"
+              },
+              "enableFloatingIP": false,
+              "frontendPort": 5016,
+              "backendPort": 22,
+              "protocol": "Tcp"
+            }
+          },
+          {
+            "name": "jess2017rdpin",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', 'lb0', '0lbfc')]"
+              },
+              "enableFloatingIP": false,
+              "frontendPort": 5017,
+              "backendPort": 3389,
+              "protocol": "Tcp"
+            }
+          },
+          {
+            "name": "jess2017winrmin",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', 'lb0', '0lbfc')]"
+              },
+              "enableFloatingIP": false,
+              "frontendPort": 5018,
+              "backendPort": 5985,
+              "protocol": "Tcp"
+            }
+          },
+          {
+            "name": "jess2017winrmhttpsin",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', 'lb0', '0lbfc')]"
+              },
+              "enableFloatingIP": false,
+              "frontendPort": 5019,
+              "backendPort": 5986,
+              "protocol": "Tcp"
+            }
+          },
+          {
+            "name": "jess2017sshin",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', 'lb0', '0lbfc')]"
+              },
+              "enableFloatingIP": false,
+              "frontendPort": 5020,
+              "backendPort": 22,
+              "protocol": "Tcp"
+            }
+          },
+          {
+            "name": "jess2019rdpin",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', 'lb0', '0lbfc')]"
+              },
+              "enableFloatingIP": false,
+              "frontendPort": 5021,
+              "backendPort": 3389,
+              "protocol": "Tcp"
+            }
+          },
+          {
+            "name": "jess2019winrmin",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', 'lb0', '0lbfc')]"
+              },
+              "enableFloatingIP": false,
+              "frontendPort": 5022,
+              "backendPort": 5985,
+              "protocol": "Tcp"
+            }
+          },
+          {
+            "name": "jess2019winrmhttpsin",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', 'lb0', '0lbfc')]"
+              },
+              "enableFloatingIP": false,
+              "frontendPort": 5023,
+              "backendPort": 5986,
+              "protocol": "Tcp"
+            }
+          },
+          {
+            "name": "jess2019sshin",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', 'lb0', '0lbfc')]"
+              },
+              "enableFloatingIP": false,
+              "frontendPort": 5024,
+              "backendPort": 22,
+              "protocol": "Tcp"
+            }
+          },
+          {
+            "name": "poshclient1rdpin",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', 'lb0', '0lbfc')]"
+              },
+              "enableFloatingIP": false,
+              "frontendPort": 5025,
+              "backendPort": 3389,
+              "protocol": "Tcp"
+            }
+          },
+          {
+            "name": "poshclient1winrmin",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', 'lb0', '0lbfc')]"
+              },
+              "enableFloatingIP": false,
+              "frontendPort": 5026,
+              "backendPort": 5985,
+              "protocol": "Tcp"
+            }
+          },
+          {
+            "name": "poshclient1winrmhttpsin",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', 'lb0', '0lbfc')]"
+              },
+              "enableFloatingIP": false,
+              "frontendPort": 5027,
+              "backendPort": 5986,
+              "protocol": "Tcp"
+            }
+          },
+          {
+            "name": "poshclient1sshin",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', 'lb0', '0lbfc')]"
+              },
+              "enableFloatingIP": false,
+              "frontendPort": 5028,
+              "backendPort": 22,
+              "protocol": "Tcp"
+            }
+          }
+        ]
+      },
+      "type": "Microsoft.Network/loadBalancers",
+      "apiVersion": "2022-07-01"
+    },
+    {
+      "tags": {
+        "AutomatedLab": "SQLBits2023-TrainingDay",
+        "CreationTime": "2023-01-18 15:02:22"
+      },
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "platformFaultDomainCount": 2,
+        "platformUpdateDomainCount": 2
+      },
+      "sku": {
+        "name": "Aligned"
+      },
+      "name": "SQLBits2023-TrainingDay",
+      "type": "Microsoft.Compute/availabilitySets",
+      "apiVersion": "2022-08-01"
+    },
+    {
+      "tags": {
+        "AutomatedLab": "SQLBits2023-TrainingDay",
+        "CreationTime": "2023-01-18 15:02:22"
+      },
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "creationData": {
+          "createOption": "Empty"
+        },
+        "diskSizeGB": 128
+      },
+      "sku": {
+        "name": "StandardSSD_LRS"
+      },
+      "name": "premium1",
+      "type": "Microsoft.Compute/disks",
+      "apiVersion": "2022-07-02"
+    },
+    {
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualNetworks', 'SQLBits2023-TrainingDay')]",
+        "[resourceId('Microsoft.Network/loadBalancers', 'lb0')]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "loadBalancerInboundNatRules": [
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'),'/inboundNatRules/jessdc1rdpin')]"
+                },
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'),'/inboundNatRules/jessdc1winrmin')]"
+                },
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'),'/inboundNatRules/jessdc1winrmhttpsin')]"
+                },
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'),'/inboundNatRules/jessdc1sshin')]"
+                }
+              ],
+              "subnet": {
+                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'SQLBits2023-TrainingDay', 'default')]"
+              },
+              "privateIPAddress": "192.168.2.10",
+              "loadBalancerBackendAddressPools": [
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'), '/backendAddressPools/0lbbc')]"
+                }
+              ],
+              "primary": true,
+              "privateIPAddressVersion": "IPv4"
+            }
+          }
+        ],
+        "enableIPForwarding": false,
+        "enableAcceleratedNetworking": false,
+        "dnsSettings": {
+          "dnsServers": [
+            "192.168.2.10",
+            "192.168.2.11"
+          ]
+        }
+      },
+      "tags": {
+        "AutomatedLab": "SQLBits2023-TrainingDay",
+        "CreationTime": "2023-01-18 15:02:22"
+      },
+      "name": "JessDC1nic0",
+      "apiVersion": "2022-07-01",
+      "type": "Microsoft.Network/networkInterfaces"
+    },
+    {
+      "name": "JessDC1",
+      "tags": {
+        "AutomatedLab": "SQLBits2023-TrainingDay",
+        "CreationTime": "2023-01-18 15:02:22"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Compute/availabilitySets', 'SQLBits2023-TrainingDay')]",
+        "[resourceId('Microsoft.Network/networkInterfaces', 'JessDC1nic0')]"
+      ],
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "osProfile": {
+          "computerName": "JessDC1",
+          "allowExtensionOperations": true,
+          "adminUsername": "theboss",
+          "windowsConfiguration": {
+            "provisionVMAgent": true,
+            "enableAutomaticUpdates": true,
+            "winRM": {
+              "listeners": [
+                {
+                  "protocol": "Http"
+                }
+              ]
+            }
+          },
+          "adminPassword": "dbatools.IO1"
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "properties": {
+                "primary": true
+              },
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', 'JessDC1nic0')]"
+            }
+          ]
+        },
+        "storageProfile": {
+          "imageReference": {
+            "version": "latest",
+            "sku": "2016-Datacenter",
+            "offer": "WindowsServer",
+            "publisher": "MicrosoftWindowsServer"
+          },
+          "dataDisks": [],
+          "osDisk": {
+            "osType": "Windows",
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
+          }
+        },
+        "hardwareProfile": {
+          "vmSize": "Standard_D2_v2"
+        },
+        "availabilitySet": {
+          "id": "[resourceId('Microsoft.Compute/availabilitySets', 'SQLBits2023-TrainingDay')]"
+        }
+      },
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2022-08-01"
+    },
+    {
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualNetworks', 'SQLBits2023-TrainingDay')]",
+        "[resourceId('Microsoft.Network/loadBalancers', 'lb0')]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "loadBalancerInboundNatRules": [
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'),'/inboundNatRules/bearddc2rdpin')]"
+                },
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'),'/inboundNatRules/bearddc2winrmin')]"
+                },
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'),'/inboundNatRules/bearddc2winrmhttpsin')]"
+                },
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'),'/inboundNatRules/bearddc2sshin')]"
+                }
+              ],
+              "subnet": {
+                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'SQLBits2023-TrainingDay', 'default')]"
+              },
+              "privateIPAddress": "192.168.2.11",
+              "loadBalancerBackendAddressPools": [
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'), '/backendAddressPools/0lbbc')]"
+                }
+              ],
+              "primary": true,
+              "privateIPAddressVersion": "IPv4"
+            }
+          }
+        ],
+        "enableIPForwarding": false,
+        "enableAcceleratedNetworking": false,
+        "dnsSettings": {
+          "dnsServers": [
+            "192.168.2.11",
+            "192.168.2.10"
+          ]
+        }
+      },
+      "tags": {
+        "AutomatedLab": "SQLBits2023-TrainingDay",
+        "CreationTime": "2023-01-18 15:02:22"
+      },
+      "name": "BeardDC2nic0",
+      "apiVersion": "2022-07-01",
+      "type": "Microsoft.Network/networkInterfaces"
+    },
+    {
+      "name": "BeardDC2",
+      "tags": {
+        "AutomatedLab": "SQLBits2023-TrainingDay",
+        "CreationTime": "2023-01-18 15:02:22"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Compute/availabilitySets', 'SQLBits2023-TrainingDay')]",
+        "[resourceId('Microsoft.Network/networkInterfaces', 'BeardDC2nic0')]"
+      ],
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "osProfile": {
+          "computerName": "BeardDC2",
+          "allowExtensionOperations": true,
+          "adminUsername": "theboss",
+          "windowsConfiguration": {
+            "provisionVMAgent": true,
+            "enableAutomaticUpdates": true,
+            "winRM": {
+              "listeners": [
+                {
+                  "protocol": "Http"
+                }
+              ]
+            }
+          },
+          "adminPassword": "dbatools.IO1"
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "properties": {
+                "primary": true
+              },
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', 'BeardDC2nic0')]"
+            }
+          ]
+        },
+        "storageProfile": {
+          "imageReference": {
+            "version": "latest",
+            "sku": "2016-Datacenter",
+            "offer": "WindowsServer",
+            "publisher": "MicrosoftWindowsServer"
+          },
+          "dataDisks": [],
+          "osDisk": {
+            "osType": "Windows",
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
+          }
+        },
+        "hardwareProfile": {
+          "vmSize": "Standard_D2_v2"
+        },
+        "availabilitySet": {
+          "id": "[resourceId('Microsoft.Compute/availabilitySets', 'SQLBits2023-TrainingDay')]"
+        }
+      },
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2022-08-01"
+    },
+    {
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualNetworks', 'SQLBits2023-TrainingDay')]",
+        "[resourceId('Microsoft.Network/loadBalancers', 'lb0')]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "loadBalancerInboundNatRules": [
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'),'/inboundNatRules/poshfs1rdpin')]"
+                },
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'),'/inboundNatRules/poshfs1winrmin')]"
+                },
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'),'/inboundNatRules/poshfs1winrmhttpsin')]"
+                },
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'),'/inboundNatRules/poshfs1sshin')]"
+                }
+              ],
+              "subnet": {
+                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'SQLBits2023-TrainingDay', 'default')]"
+              },
+              "privateIPAddress": "192.168.2.50",
+              "loadBalancerBackendAddressPools": [
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'), '/backendAddressPools/0lbbc')]"
+                }
+              ],
+              "primary": true,
+              "privateIPAddressVersion": "IPv4"
+            }
+          }
+        ],
+        "enableIPForwarding": false,
+        "enableAcceleratedNetworking": false,
+        "dnsSettings": {
+          "dnsServers": [
+            "192.168.2.10",
+            "192.168.2.11"
+          ]
+        }
+      },
+      "tags": {
+        "AutomatedLab": "SQLBits2023-TrainingDay",
+        "CreationTime": "2023-01-18 15:02:22"
+      },
+      "name": "POSHFS1nic0",
+      "apiVersion": "2022-07-01",
+      "type": "Microsoft.Network/networkInterfaces"
+    },
+    {
+      "name": "POSHFS1",
+      "tags": {
+        "AutomatedLab": "SQLBits2023-TrainingDay",
+        "CreationTime": "2023-01-18 15:02:22"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Compute/availabilitySets', 'SQLBits2023-TrainingDay')]",
+        "[resourceId('Microsoft.Network/networkInterfaces', 'POSHFS1nic0')]"
+      ],
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "osProfile": {
+          "computerName": "POSHFS1",
+          "allowExtensionOperations": true,
+          "adminUsername": "theboss",
+          "windowsConfiguration": {
+            "provisionVMAgent": true,
+            "enableAutomaticUpdates": true,
+            "winRM": {
+              "listeners": [
+                {
+                  "protocol": "Http"
+                }
+              ]
+            }
+          },
+          "adminPassword": "dbatools.IO1"
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "properties": {
+                "primary": true
+              },
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', 'POSHFS1nic0')]"
+            }
+          ]
+        },
+        "storageProfile": {
+          "imageReference": {
+            "version": "latest",
+            "sku": "2016-Datacenter",
+            "offer": "WindowsServer",
+            "publisher": "MicrosoftWindowsServer"
+          },
+          "dataDisks": [
+            {
+              "name": "premium1",
+              "createOption": "attach",
+              "managedDisk": {
+                "id": "[resourceId('Microsoft.Compute/disks/', 'premium1')]"
+              },
+              "lun": 0
+            }
+          ],
+          "osDisk": {
+            "osType": "Windows",
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
+          }
+        },
+        "hardwareProfile": {
+          "vmSize": "Standard_D2_v2"
+        },
+        "availabilitySet": {
+          "id": "[resourceId('Microsoft.Compute/availabilitySets', 'SQLBits2023-TrainingDay')]"
+        }
+      },
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2022-08-01"
+    },
+    {
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualNetworks', 'SQLBits2023-TrainingDay')]",
+        "[resourceId('Microsoft.Network/loadBalancers', 'lb0')]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "loadBalancerInboundNatRules": [
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'),'/inboundNatRules/jess2016rdpin')]"
+                },
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'),'/inboundNatRules/jess2016winrmin')]"
+                },
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'),'/inboundNatRules/jess2016winrmhttpsin')]"
+                },
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'),'/inboundNatRules/jess2016sshin')]"
+                }
+              ],
+              "subnet": {
+                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'SQLBits2023-TrainingDay', 'default')]"
+              },
+              "privateIPAddress": "192.168.2.53",
+              "loadBalancerBackendAddressPools": [
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'), '/backendAddressPools/0lbbc')]"
+                }
+              ],
+              "primary": true,
+              "privateIPAddressVersion": "IPv4"
+            }
+          }
+        ],
+        "enableIPForwarding": false,
+        "enableAcceleratedNetworking": false,
+        "dnsSettings": {
+          "dnsServers": [
+            "192.168.2.10",
+            "192.168.2.11"
+          ]
+        }
+      },
+      "tags": {
+        "AutomatedLab": "SQLBits2023-TrainingDay",
+        "CreationTime": "2023-01-18 15:02:22"
+      },
+      "name": "Jess2016nic0",
+      "apiVersion": "2022-07-01",
+      "type": "Microsoft.Network/networkInterfaces"
+    },
+    {
+      "name": "Jess2016",
+      "tags": {
+        "AutomatedLab": "SQLBits2023-TrainingDay",
+        "CreationTime": "2023-01-18 15:02:22"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Compute/availabilitySets', 'SQLBits2023-TrainingDay')]",
+        "[resourceId('Microsoft.Network/networkInterfaces', 'Jess2016nic0')]"
+      ],
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "osProfile": {
+          "computerName": "Jess2016",
+          "allowExtensionOperations": true,
+          "adminUsername": "theboss",
+          "windowsConfiguration": {
+            "provisionVMAgent": true,
+            "enableAutomaticUpdates": true,
+            "winRM": {
+              "listeners": [
+                {
+                  "protocol": "Http"
+                }
+              ]
+            }
+          },
+          "adminPassword": "dbatools.IO1"
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "properties": {
+                "primary": true
+              },
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', 'Jess2016nic0')]"
+            }
+          ]
+        },
+        "storageProfile": {
+          "imageReference": {
+            "version": "latest",
+            "sku": "enterprise",
+            "offer": "sql2016sp3-ws2019",
+            "publisher": "MicrosoftSQLServer"
+          },
+          "dataDisks": [],
+          "osDisk": {
+            "osType": "Windows",
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
+          }
+        },
+        "hardwareProfile": {
+          "vmSize": "Standard_D2_v2"
+        },
+        "availabilitySet": {
+          "id": "[resourceId('Microsoft.Compute/availabilitySets', 'SQLBits2023-TrainingDay')]"
+        }
+      },
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2022-08-01"
+    },
+    {
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualNetworks', 'SQLBits2023-TrainingDay')]",
+        "[resourceId('Microsoft.Network/loadBalancers', 'lb0')]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "loadBalancerInboundNatRules": [
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'),'/inboundNatRules/jess2017rdpin')]"
+                },
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'),'/inboundNatRules/jess2017winrmin')]"
+                },
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'),'/inboundNatRules/jess2017winrmhttpsin')]"
+                },
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'),'/inboundNatRules/jess2017sshin')]"
+                }
+              ],
+              "subnet": {
+                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'SQLBits2023-TrainingDay', 'default')]"
+              },
+              "privateIPAddress": "192.168.2.55",
+              "loadBalancerBackendAddressPools": [
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'), '/backendAddressPools/0lbbc')]"
+                }
+              ],
+              "primary": true,
+              "privateIPAddressVersion": "IPv4"
+            }
+          }
+        ],
+        "enableIPForwarding": false,
+        "enableAcceleratedNetworking": false,
+        "dnsSettings": {
+          "dnsServers": [
+            "192.168.2.10",
+            "192.168.2.11"
+          ]
+        }
+      },
+      "tags": {
+        "AutomatedLab": "SQLBits2023-TrainingDay",
+        "CreationTime": "2023-01-18 15:02:22"
+      },
+      "name": "Jess2017nic0",
+      "apiVersion": "2022-07-01",
+      "type": "Microsoft.Network/networkInterfaces"
+    },
+    {
+      "name": "Jess2017",
+      "tags": {
+        "AutomatedLab": "SQLBits2023-TrainingDay",
+        "CreationTime": "2023-01-18 15:02:22"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Compute/availabilitySets', 'SQLBits2023-TrainingDay')]",
+        "[resourceId('Microsoft.Network/networkInterfaces', 'Jess2017nic0')]"
+      ],
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "osProfile": {
+          "computerName": "Jess2017",
+          "allowExtensionOperations": true,
+          "adminUsername": "theboss",
+          "windowsConfiguration": {
+            "provisionVMAgent": true,
+            "enableAutomaticUpdates": true,
+            "winRM": {
+              "listeners": [
+                {
+                  "protocol": "Http"
+                }
+              ]
+            }
+          },
+          "adminPassword": "dbatools.IO1"
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "properties": {
+                "primary": true
+              },
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', 'Jess2017nic0')]"
+            }
+          ]
+        },
+        "storageProfile": {
+          "imageReference": {
+            "version": "latest",
+            "sku": "Enterprise",
+            "offer": "SQL2017-WS2016",
+            "publisher": "MicrosoftSQLServer"
+          },
+          "dataDisks": [],
+          "osDisk": {
+            "osType": "Windows",
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
+          }
+        },
+        "hardwareProfile": {
+          "vmSize": "Standard_D2_v2"
+        },
+        "availabilitySet": {
+          "id": "[resourceId('Microsoft.Compute/availabilitySets', 'SQLBits2023-TrainingDay')]"
+        }
+      },
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2022-08-01"
+    },
+    {
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualNetworks', 'SQLBits2023-TrainingDay')]",
+        "[resourceId('Microsoft.Network/loadBalancers', 'lb0')]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "loadBalancerInboundNatRules": [
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'),'/inboundNatRules/jess2019rdpin')]"
+                },
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'),'/inboundNatRules/jess2019winrmin')]"
+                },
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'),'/inboundNatRules/jess2019winrmhttpsin')]"
+                },
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'),'/inboundNatRules/jess2019sshin')]"
+                }
+              ],
+              "subnet": {
+                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'SQLBits2023-TrainingDay', 'default')]"
+              },
+              "privateIPAddress": "192.168.2.56",
+              "loadBalancerBackendAddressPools": [
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'), '/backendAddressPools/0lbbc')]"
+                }
+              ],
+              "primary": true,
+              "privateIPAddressVersion": "IPv4"
+            }
+          }
+        ],
+        "enableIPForwarding": false,
+        "enableAcceleratedNetworking": false,
+        "dnsSettings": {
+          "dnsServers": [
+            "192.168.2.10",
+            "192.168.2.11"
+          ]
+        }
+      },
+      "tags": {
+        "AutomatedLab": "SQLBits2023-TrainingDay",
+        "CreationTime": "2023-01-18 15:02:22"
+      },
+      "name": "Jess2019nic0",
+      "apiVersion": "2022-07-01",
+      "type": "Microsoft.Network/networkInterfaces"
+    },
+    {
+      "name": "Jess2019",
+      "tags": {
+        "AutomatedLab": "SQLBits2023-TrainingDay",
+        "CreationTime": "2023-01-18 15:02:22"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Compute/availabilitySets', 'SQLBits2023-TrainingDay')]",
+        "[resourceId('Microsoft.Network/networkInterfaces', 'Jess2019nic0')]"
+      ],
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "osProfile": {
+          "computerName": "Jess2019",
+          "allowExtensionOperations": true,
+          "adminUsername": "theboss",
+          "windowsConfiguration": {
+            "provisionVMAgent": true,
+            "enableAutomaticUpdates": true,
+            "winRM": {
+              "listeners": [
+                {
+                  "protocol": "Http"
+                }
+              ]
+            }
+          },
+          "adminPassword": "dbatools.IO1"
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "properties": {
+                "primary": true
+              },
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', 'Jess2019nic0')]"
+            }
+          ]
+        },
+        "storageProfile": {
+          "imageReference": {
+            "version": "latest",
+            "sku": "enterprise",
+            "offer": "sql2019-ws2019",
+            "publisher": "MicrosoftSQLServer"
+          },
+          "dataDisks": [],
+          "osDisk": {
+            "osType": "Windows",
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
+          }
+        },
+        "hardwareProfile": {
+          "vmSize": "Standard_D2_v2"
+        },
+        "availabilitySet": {
+          "id": "[resourceId('Microsoft.Compute/availabilitySets', 'SQLBits2023-TrainingDay')]"
+        }
+      },
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2022-08-01"
+    },
+    {
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualNetworks', 'SQLBits2023-TrainingDay')]",
+        "[resourceId('Microsoft.Network/loadBalancers', 'lb0')]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "loadBalancerInboundNatRules": [
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'),'/inboundNatRules/poshclient1rdpin')]"
+                },
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'),'/inboundNatRules/poshclient1winrmin')]"
+                },
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'),'/inboundNatRules/poshclient1winrmhttpsin')]"
+                },
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'),'/inboundNatRules/poshclient1sshin')]"
+                }
+              ],
+              "subnet": {
+                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'SQLBits2023-TrainingDay', 'default')]"
+              },
+              "privateIPAddress": "192.168.2.54",
+              "loadBalancerBackendAddressPools": [
+                {
+                  "id": "[concat(resourceId('Microsoft.Network/loadBalancers', 'lb0'), '/backendAddressPools/0lbbc')]"
+                }
+              ],
+              "primary": true,
+              "privateIPAddressVersion": "IPv4"
+            }
+          }
+        ],
+        "enableIPForwarding": false,
+        "enableAcceleratedNetworking": false,
+        "dnsSettings": {
+          "dnsServers": [
+            "192.168.2.10",
+            "192.168.2.11"
+          ]
+        }
+      },
+      "tags": {
+        "AutomatedLab": "SQLBits2023-TrainingDay",
+        "CreationTime": "2023-01-18 15:02:22"
+      },
+      "name": "POSHClient1nic0",
+      "apiVersion": "2022-07-01",
+      "type": "Microsoft.Network/networkInterfaces"
+    },
+    {
+      "name": "POSHClient1",
+      "tags": {
+        "AutomatedLab": "SQLBits2023-TrainingDay",
+        "CreationTime": "2023-01-18 15:02:22"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Compute/availabilitySets', 'SQLBits2023-TrainingDay')]",
+        "[resourceId('Microsoft.Network/networkInterfaces', 'POSHClient1nic0')]"
+      ],
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "osProfile": {
+          "computerName": "POSHClient1",
+          "allowExtensionOperations": true,
+          "adminUsername": "theboss",
+          "windowsConfiguration": {
+            "provisionVMAgent": true,
+            "enableAutomaticUpdates": true,
+            "winRM": {
+              "listeners": [
+                {
+                  "protocol": "Http"
+                }
+              ]
+            }
+          },
+          "adminPassword": "dbatools.IO1"
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "properties": {
+                "primary": true
+              },
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', 'POSHClient1nic0')]"
+            }
+          ]
+        },
+        "storageProfile": {
+          "imageReference": {
+            "version": "latest",
+            "sku": "2016-Datacenter",
+            "offer": "WindowsServer",
+            "publisher": "MicrosoftWindowsServer"
+          },
+          "dataDisks": [],
+          "osDisk": {
+            "osType": "Windows",
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
+          }
+        },
+        "hardwareProfile": {
+          "vmSize": "Standard_D2_v2"
+        },
+        "availabilitySet": {
+          "id": "[resourceId('Microsoft.Compute/availabilitySets', 'SQLBits2023-TrainingDay')]"
+        }
+      },
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2022-08-01"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ListXmlStoreOfDisk>
+  <Timestamp>
+    <dateTime>0001-01-01T00:00:00</dateTime>
+  </Timestamp>
+  <ID>
+    <guid>00000000-0000-0000-0000-000000000000</guid>
+  </ID>
+  <Metadata>
+    <ArrayOfString />
+  </Metadata>
+  <Disk>
+    <SkipInitialization>false</SkipInitialization>
+    <Name>premium1</Name>
+    <DiskSize>128</DiskSize>
+    <AllocationUnitSize>4096</AllocationUnitSize>
+    <UseLargeFRS>false</UseLargeFRS>
+    <Label>ALData</Label>
+    <DriveLetter>0</DriveLetter>
+    <PartitionStyle>GPT</PartitionStyle>
+    <Lun>0</Lun>
+  </Disk>
+</ListXmlStoreOfDisk>
