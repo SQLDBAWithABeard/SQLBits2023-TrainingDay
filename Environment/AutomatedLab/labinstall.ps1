@@ -140,6 +140,4 @@ Invoke-LabCommand -FilePath .\Environment\AutomatedLab\code-setup.ps1 -ComputerN
 
 Invoke-LabCommand -FilePath .\Environment\AutomatedLab\modules.ps1 -ComputerName $ClientVM -DoNotUseCredSsp -ActivityName 'Install Modules'
 
-
 Invoke-LabCommand -FilePath .\Environment\AutomatedLab\sqlsetupfordayscript.ps1 -ComputerName $ClientVM -DoNotUseCredSsp -ActivityName 'SQLSetUP'
-
