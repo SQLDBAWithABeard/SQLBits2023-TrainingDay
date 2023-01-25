@@ -131,11 +131,11 @@ Install-Lab -Verbose
 
 Show-LabDeploymentSummary -Detailed
 
-Invoke-LabCommand -FilePath .\Environment\AutomatedLab\chocoinstall.ps1 -ComputerName POSHClient1 -DoNotUseCredSsp
+Invoke-LabCommand -FilePath .\Environment\AutomatedLab\chocoinstall.ps1 -ComputerName POSHClient1 -DoNotUseCredSsp -ActivityName 'Chocolatey Install'
 
 Restart-LabVM -ComputerName POSHClient1
 
-Invoke-LabCommand -FilePath .\Environment\AutomatedLab\code-setup.ps1 -ComputerName POSHClient1 -DoNotUseCredSsp
+Invoke-LabCommand -FilePath .\Environment\AutomatedLab\code-setup.ps1 -ComputerName POSHClient1 -DoNotUseCredSsp -ActivityName 'VS Code Setup'
 
-Invoke-LabCommand -FilePath .\Environment\AutomatedLab\modules.ps1 -ComputerName POSHClient1 -DoNotUseCredSsp
+Invoke-LabCommand -FilePath .\Environment\AutomatedLab\modules.ps1 -ComputerName POSHClient1 -DoNotUseCredSsp -ActivityName 'Install Modules'
 
