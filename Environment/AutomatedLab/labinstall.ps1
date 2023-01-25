@@ -10,6 +10,7 @@ $SubscriptionId = '6d8f994c-9051-4cef-ba61-528bab27d213' # Robs Beard MVP subscr
 
 $AdminPass = 'dbatools.IO1'
 
+$CLientVM = 'POSHClient1'
 $SQLServers = @(
 
     @{
@@ -121,21 +122,21 @@ foreach ($SQLServer in $SQLServers) {
     }
 }
 
-if ($LabDefinition.Machines |Where-Object { $_.Name -eq 'POSHClient1' }) {} else { 
+if ($LabDefinition.Machines |Where-Object { $_.Name -eq $ClientVM }) {} else { 
     #a
 #Development client in the child domain a with some extra tools
-Add-LabMachineDefinition -Name POSHClient1 -Memory 1GB -IpAddress 192.168.2.54
+Add-LabMachineDefinition -Name $ClientVM -Memory 1GB -IpAddress 192.168.2.54
 }
 
 Install-Lab -Verbose
 
 Show-LabDeploymentSummary -Detailed
 
-Invoke-LabCommand -FilePath .\Environment\AutomatedLab\chocoinstall.ps1 -ComputerName POSHClient1 -DoNotUseCredSsp
+Invoke-LabCommand -FilePath .\Environment\AutomatedLab\chocoinstall.ps1 -ComputerName $ClientVM -DoNotUseCredSsp -ActivityName 'Chocolatey Install'
 
-Restart-LabVM -ComputerName POSHClient1
+Restart-LabVM -ComputerName $ClientVM
 
-Invoke-LabCommand -FilePath .\Environment\AutomatedLab\code-setup.ps1 -ComputerName POSHClient1 -DoNotUseCredSsp
+Invoke-LabCommand -FilePath .\Environment\AutomatedLab\code-setup.ps1 -ComputerName $ClientVM -DoNotUseCredSsp -ActivityName 'VS Code Setup'
 
-Invoke-LabCommand -FilePath .\Environment\AutomatedLab\modules.ps1 -ComputerName POSHClient1 -DoNotUseCredSsp
+Invoke-LabCommand -FilePath .\Environment\AutomatedLab\modules.ps1 -ComputerName $ClientVM -DoNotUseCredSsp -ActivityName 'Install Modules'
 
