@@ -34,6 +34,34 @@ $SQLServers = @(
         Memory     = 1GB
         IPAddress  = '192.168.2.56'
     }
+    @{
+        Role       = 'SQLServer2019'
+        Properties = @{InstallSampleDatabase = 'true' }
+        Name       = 'Beard2019AG1'
+        Memory     = 1GB
+        IPAddress  = '192.168.2.57'
+    }
+    @{
+        Role       = 'SQLServer2019'
+        Properties = @{InstallSampleDatabase = 'true' }
+        Name       = 'Beard2019AG2'
+        Memory     = 1GB
+        IPAddress  = '192.168.2.58'
+    }
+    @{
+        Role       = 'SQLServer2019'
+        Properties = @{InstallSampleDatabase = 'true' }
+        Name       = 'Beard2019AG3'
+        Memory     = 1GB
+        IPAddress  = '192.168.2.59'
+    }
+    @{
+        Role       = 'SQLServer2019'
+        Properties = @{InstallSampleDatabase = 'true' }
+        Name       = 'Beard2019AG4'
+        Memory     = 1GB
+        IPAddress  = '192.168.2.60'
+    }
 )
 
 
