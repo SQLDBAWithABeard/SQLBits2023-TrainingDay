@@ -61,8 +61,8 @@ $PsFrameworkmodulebase = (Get-Module PSFramework -ListAvailable | select -First 
 $SQLHosts | ForEach-Object {
     $session = New-PSSession -ComputerName $_ -Credential $domaincred
     Write-Host "Copying modules over to $($_)"
-    # Copy-Item $dbatoolsmodulebase  -ToSession $session -Destination $dbatoolsmodulebase -Recurse -Force
-    #  Copy-Item $PsFrameworkmodulebase  -ToSession $session -Destination $PsFrameworkmodulebase -Recurse -Force
+     Copy-Item $dbatoolsmodulebase  -ToSession $session -Destination $dbatoolsmodulebase -Recurse -Force
+      Copy-Item $PsFrameworkmodulebase  -ToSession $session -Destination $PsFrameworkmodulebase -Recurse -Force
 }
 # Run the SQL Server as the gMSA
 $SQLHosts | ForEach-Object {
