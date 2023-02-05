@@ -15,49 +15,49 @@ $SQLServers = @(
 
     @{
         Role       = 'SQLServer2016'
-        Properties = @{InstallSampleDatabase = 'true' }
+        # Properties = @{InstallSampleDatabase = 'true' }
         Name       = 'Jess2016'
         Memory     = 1GB
         IPAddress  = '192.168.2.53'
     }
     @{
         Role       = 'SQLServer2017'
-        Properties = @{InstallSampleDatabase = 'true' }
+        # Properties = @{InstallSampleDatabase = 'true' }
         Name       = 'Jess2017'
         Memory     = 1GB
         IPAddress  = '192.168.2.55'
     }
     @{
         Role       = 'SQLServer2019'
-        Properties = @{InstallSampleDatabase = 'true' }
+        # Properties = @{InstallSampleDatabase = 'true' }
         Name       = 'Jess2019'
         Memory     = 1GB
         IPAddress  = '192.168.2.56'
     }
     @{
         Role       = 'SQLServer2019'
-        Properties = @{InstallSampleDatabase = 'true' }
+        # Properties = @{InstallSampleDatabase = 'true' }
         Name       = 'Beard2019AG1'
         Memory     = 1GB
         IPAddress  = '192.168.2.57'
     }
     @{
         Role       = 'SQLServer2019'
-        Properties = @{InstallSampleDatabase = 'true' }
+        # Properties = @{InstallSampleDatabase = 'true' }
         Name       = 'Beard2019AG2'
         Memory     = 1GB
         IPAddress  = '192.168.2.58'
     }
     @{
         Role       = 'SQLServer2019'
-        Properties = @{InstallSampleDatabase = 'true' }
+        # Properties = @{InstallSampleDatabase = 'true' }
         Name       = 'Beard2019AG3'
         Memory     = 1GB
         IPAddress  = '192.168.2.59'
     }
     @{
         Role       = 'SQLServer2019'
-        Properties = @{InstallSampleDatabase = 'true' }
+        # Properties = @{InstallSampleDatabase = 'true' }
         Name       = 'Beard2019AG4'
         Memory     = 1GB
         IPAddress  = '192.168.2.60'
@@ -220,3 +220,6 @@ Invoke-LabCommand -FilePath .\Environment\AutomatedLab\sqlsetupfordayscript.ps1 
 Invoke-LabCommand -FilePath .\Environment\AutomatedLab\fileserversetup.ps1 -ComputerName POSHFS1 -DoNotUseCredSsp -ActivityName 'FileServer'
 
 Invoke-LabCommand -FilePath .\Environment\AutomatedLab\SQLBackupsSetup.ps1 -ComputerName $ClientVM -DoNotUseCredSsp -ActivityName 'SQLBackup Set up'
+
+Stop-LabVM -All
+
