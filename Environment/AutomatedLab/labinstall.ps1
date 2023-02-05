@@ -64,6 +64,46 @@ $SQLServers = @(
     }
 )
 
+$GenericBlankBoxes = @(
+    @{
+        Name      = 'WS2022Vm1'
+        Memory    = 1GB
+        IPAddress = '192.168.2.61'
+        OperatingSystem = 'Windows Server 2022 Datacenter (Desktop Experience)'
+    }
+    @{
+        Name      = 'WS2019Vm1'
+        Memory    = 1GB
+        IPAddress = '192.168.2.62'
+        OperatingSystem = 'Windows Server 2022 Datacenter (Desktop Experience)'
+    }
+    @{
+        Name      = 'WS2022Vm2'
+        Memory    = 1GB
+        IPAddress = '192.168.2.63'
+        OperatingSystem = 'Windows Server 2022 Datacenter (Desktop Experience)'
+    }
+    @{
+        Name      = 'WS2019Vm2'
+        Memory    = 1GB
+        IPAddress = '192.168.2.64'
+        OperatingSystem = 'Windows Server 2022 Datacenter (Desktop Experience)'
+    }
+    @{
+        Name      = 'WS2022Vm2'
+        Memory    = 1GB
+        IPAddress = '192.168.2.65'
+        OperatingSystem = 'Windows Server 2022 Datacenter (Desktop Experience)'
+    }
+    @{
+        Name      = 'WS2019Vm2'
+        Memory    = 1GB
+        IPAddress = '192.168.2.66'
+        OperatingSystem = 'Windows Server 2022 Datacenter (Desktop Experience)'
+    }
+)
+
+
 
 #create an empty lab template and define where the lab XML files and the VMs will be stored
 if ((Get-Lab -List) -contains $LabName) {
@@ -99,7 +139,7 @@ $PSDefaultParameterValues = @{
     'Add-LabMachineDefinition:OperatingSystem' = 'Windows Server 2016 Datacenter (Desktop Experience)'
 }
 
-if ($LabDefinition.Machines |Where-Object {$_.Roles -like 'RootDC' -and $_.Name -eq 'JessDC1'}) {} else {
+if ($LabDefinition.Machines | Where-Object { $_.Roles -like 'RootDC' -and $_.Name -eq 'JessDC1' }) {} else {
     #the first machine is the root domain controller
     $roles = Get-LabMachineRoleDefinition -Role RootDC
     #The PostInstallationActivity is just creating some users
@@ -119,7 +159,7 @@ if ($LabDefinition.Machines |Where-Object {$_.Roles -like 'RootDC' -and $_.Name 
     Add-LabMachineDefinition @dc1Config 
 }
 
-if ($LabDefinition.Machines |Where-Object {$_.Roles -like 'DC' -and $_.Name -eq 'BeardDC2'}) {} else {
+if ($LabDefinition.Machines | Where-Object { $_.Roles -like 'DC' -and $_.Name -eq 'BeardDC2' }) {} else {
     #the root domain gets a second domain controller
     $roles = Get-LabMachineRoleDefinition -Role DC
 
@@ -134,7 +174,7 @@ if ($LabDefinition.Machines |Where-Object {$_.Roles -like 'DC' -and $_.Name -eq 
     Add-LabMachineDefinition @dc2Config 
 }
 
-If ($LabDefinition.Machines |Where-Object {$_.Roles -like 'FileServer' -and $_.Name -eq 'POSHFS1' }) {} else { 
+If ($LabDefinition.Machines | Where-Object { $_.Roles -like 'FileServer' -and $_.Name -eq 'POSHFS1' }) {} else { 
     #file server
     $roles = Get-LabMachineRoleDefinition -Role FileServer
     Add-LabDiskDefinition -Name premium1 -DiskSizeInGb 128
@@ -144,17 +184,24 @@ If ($LabDefinition.Machines |Where-Object {$_.Roles -like 'FileServer' -and $_.N
 }
 
 foreach ($SQLServer in $SQLServers) {
-    if ($LabDefinition.Machines |Where-Object {$_.Roles -like $SQLServer.Role -and $_.Name -eq $SQLServer.Name }) {} else { 
+    if ($LabDefinition.Machines | Where-Object { $_.Roles -like $SQLServer.Role -and $_.Name -eq $SQLServer.Name }) {} else { 
         $role = Get-LabMachineRoleDefinition -Role $SQLServer.Role -Properties $SQLServer.Properties
         Add-LabMachineDefinition -Name $SQLServer.Name -Memory $SQLServer.Memory -Roles $role -IpAddress $SQLServer.IPAddress
     }
 }
 
-if ($LabDefinition.Machines |Where-Object { $_.Name -eq $ClientVM }) {} else { 
+if ($LabDefinition.Machines | Where-Object { $_.Name -eq $ClientVM }) {} else { 
     #a
-#Development client in the child domain a with some extra tools
-Add-LabMachineDefinition -Name $ClientVM -Memory 1GB -IpAddress 192.168.2.54
+    #Development client in the child domain a with some extra tools
+    Add-LabMachineDefinition -Name $ClientVM -Memory 1GB -IpAddress 192.168.2.54
 }
+
+foreach ($GenericHost in $GenericBlankBoxes) {
+    if ($LabDefinition.Machines | Where-Object { $_.Name -eq $GenericHost.Name }) {} else { 
+        Add-LabMachineDefinition -Name $GenericHost.Name -Memory $GenericHost.Memory -IpAddress $GenericHost.IPAddress -OperatingSystem $GenericHost.OperatingSystem 
+    }
+}
+
 
 Install-Lab -Verbose
 
