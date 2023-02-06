@@ -3,7 +3,7 @@
 
 # Azure Infrastructure
 
-- for demoing large tlhings
+- for demoing large things
   - AGs
   - Complex migrations
   - Migrations to the cloud
@@ -16,6 +16,6 @@ MI start/stop - MI LInk - etrc etc
 
 backup restore back and forth from MI to SQL202
 
-Jess wants to do funky demo of stuff here and stuff therere and move it around
+Jess wants to do funky demo of stuff here and stuff there and move it around
 
 # dev container infrastructure
