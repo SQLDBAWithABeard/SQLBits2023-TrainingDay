@@ -11,6 +11,7 @@ $SubscriptionId = '6d8f994c-9051-4cef-ba61-528bab27d213' # Robs Beard MVP subscr
 $AdminPass = 'dbatools.IO1'
 
 $CLientVM = 'POSHClient1'
+
 $SQLServers = @(
 
     @{
@@ -210,6 +211,12 @@ Show-LabDeploymentSummary -Detailed
 foreach($SQLServer in $SQLServers){
     $ActivityName = "SQL Start for {0}" -f  $SQLServer.Name
     Invoke-LabCommand -FilePath .\Environment\AutomatedLab\startsql.ps1 -ComputerName $SQLServer.Name -DoNotUseCredSsp -ActivityName $ActivityName
+}
+
+# add inbound firewall rule for TCP 1433
+foreach($SQLServer in $SQLServers){
+    $ActivityName = "SQL Server inbound firewall rules for {0}" -f  $SQLServer.Name
+    Invoke-LabCommand -FilePath .\Environment\AutomatedLab\firewall.ps1 -ComputerName $SQLServer.Name -DoNotUseCredSsp -ActivityName $ActivityName
 }
 
 Invoke-LabCommand -FilePath .\Environment\AutomatedLab\chocoinstall.ps1 -ComputerName $ClientVM -DoNotUseCredSsp -ActivityName 'Chocolatey Install'
