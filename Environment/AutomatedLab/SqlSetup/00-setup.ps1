@@ -6,6 +6,8 @@ $PSDefaultParameterValues = @{
     '*Ad*:credential' = $cred
 }
 
-$global:SQLHosts = 'Jess2016', 'Jess2017', 'Jess2019'
+$global:SASQLHosts = 'Jess2016', 'Jess2017', 'Jess2019'
+$global:SQLAgs = 'Beard2019AG1','Beard2019AG2','Beard2019AG3','Beard2019AG4'
 
+$global:SQLHosts = $SASQLHosts + $SQLAgs
 

@@ -1,5 +1,5 @@
-# Run the SQL Server as the gMSA
-$SQLHosts | ForEach-Object {
+# Run the SQL Server as the gMSA - standalone
+$SASQLHosts | ForEach-Object {
     $message = "Update {0} to use the SQLgMSA service account" -f $_
     Write-PSFMessage -Level Host -Message $message
     Invoke-Command {
@@ -11,6 +11,21 @@ $SQLHosts | ForEach-Object {
         }
     } -ComputerName $_ -Credential $domaincred
 }
+
+# Run the SQL Server as the gMSA - AGS
+$SQLAgs | ForEach-Object {
+    $message = "Update {0} to use the SQLAGgMSA service account" -f $_
+    Write-PSFMessage -Level Host -Message $message
+    Invoke-Command {
+        $secStringPassword = 'dbatools.IO1' | ConvertTo-SecureString -AsPlainText -Force
+        [pscredential]$cred = New-Object System.Management.Automation.PSCredential ('theboss', $secStringPassword)
+        [pscredential]$domaincred = New-Object System.Management.Automation.PSCredential ('jessandbeard\theboss', $secStringPassword)
+        if ((Get-DbaService -SqlInstance localhost -Type Engine).StartName -ne 'jessandbeard\SQLAGgMSA$') {
+            Update-DbaServiceAccount -ComputerName localhost -Credential $domaincred -ServiceName MSSQLSERVER -Username 'jessandbeard\SQLAGgMSA$'
+        }
+    } -ComputerName $_ -Credential $domaincred
+}
+
 
 # Set up the SPNs
 # Thank you Jess https://jesspomfret.com/spn-troubles/
