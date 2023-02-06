@@ -90,13 +90,13 @@ $GenericBlankBoxes = @(
         OperatingSystem = 'Windows Server 2022 Datacenter (Desktop Experience)'
     }
     @{
-        Name      = 'WS2022Vm2'
+        Name      = 'WS2022Vm3'
         Memory    = 1GB
         IPAddress = '192.168.2.65'
         OperatingSystem = 'Windows Server 2022 Datacenter (Desktop Experience)'
     }
     @{
-        Name      = 'WS2019Vm2'
+        Name      = 'WS2019Vm3'
         Memory    = 1GB
         IPAddress = '192.168.2.66'
         OperatingSystem = 'Windows Server 2022 Datacenter (Desktop Experience)'
@@ -110,7 +110,7 @@ if ((Get-Lab -List) -contains $LabName) {
     Import-LabDefinition  -Name $LabName
     $LabDefinition = Get-LabDefinition
 } else {
-    New-LabDefinition -Name $labName -DefaultVirtualizationEngine Azure 
+    New-LabDefinition -Name $labName -DefaultVirtualizationEngine Azure
     Add-LabAzureSubscription -DefaultLocationName $azureDefaultLocation  -AllowBastionHost -SubscriptionId $SubscriptionId -AutoShutdownTime 18:00 -AutoShutdownTimeZone 'UTC'
 }
 
@@ -123,11 +123,11 @@ if (Get-LabVirtualNetwork) {} else {
 
 if (Get-LabDomainDefinition) {} else {
     #and the domain definition with the domain admin account
-    Add-LabDomainDefinition -Name $DomainName  -AdminUser theboss -AdminPassword $AdminPass 
+    Add-LabDomainDefinition -Name $DomainName  -AdminUser theboss -AdminPassword $AdminPass
 }
 
 
-Set-LabInstallationCredential -Username theboss -Password $AdminPass 
+Set-LabInstallationCredential -Username theboss -Password $AdminPass
 
 #defining default parameter values, as these ones are the same for all the machines
 $PSDefaultParameterValues = @{
@@ -149,14 +149,14 @@ if ($LabDefinition.Machines | Where-Object { $_.Roles -like 'RootDC' -and $_.Nam
 
     $DC1Config = @{
         Name                     = 'JessDC1'
-        Memory                   = 512MB 
+        Memory                   = 512MB
         Roles                    = $roles
         IpAddress                = '192.168.2.10'
         DNSServer1               = '192.168.2.10'
         DNSServer2               = '192.168.2.11'
         PostInstallationActivity = $postInstallActivity
     }
-    Add-LabMachineDefinition @dc1Config 
+    Add-LabMachineDefinition @dc1Config
 }
 
 if ($LabDefinition.Machines | Where-Object { $_.Roles -like 'DC' -and $_.Name -eq 'BeardDC2' }) {} else {
@@ -165,16 +165,16 @@ if ($LabDefinition.Machines | Where-Object { $_.Roles -like 'DC' -and $_.Name -e
 
     $DC2Config = @{
         Name       = 'BeardDC2'
-        Memory     = 512MB 
+        Memory     = 512MB
         Roles      = $roles
         IpAddress  = '192.168.2.11'
         DNSServer1 = '192.168.2.11'
         DNSServer2 = '192.168.2.10'
     }
-    Add-LabMachineDefinition @dc2Config 
+    Add-LabMachineDefinition @dc2Config
 }
 
-If ($LabDefinition.Machines | Where-Object { $_.Roles -like 'FileServer' -and $_.Name -eq 'POSHFS1' }) {} else { 
+If ($LabDefinition.Machines | Where-Object { $_.Roles -like 'FileServer' -and $_.Name -eq 'POSHFS1' }) {} else {
     #file server
     $roles = Get-LabMachineRoleDefinition -Role FileServer
     Add-LabDiskDefinition -Name premium1 -DiskSizeInGb 128
@@ -184,21 +184,21 @@ If ($LabDefinition.Machines | Where-Object { $_.Roles -like 'FileServer' -and $_
 }
 
 foreach ($SQLServer in $SQLServers) {
-    if ($LabDefinition.Machines | Where-Object { $_.Roles -like $SQLServer.Role -and $_.Name -eq $SQLServer.Name }) {} else { 
+    if ($LabDefinition.Machines | Where-Object { $_.Roles -like $SQLServer.Role -and $_.Name -eq $SQLServer.Name }) {} else {
         $role = Get-LabMachineRoleDefinition -Role $SQLServer.Role -Properties $SQLServer.Properties
         Add-LabMachineDefinition -Name $SQLServer.Name -Memory $SQLServer.Memory -Roles $role -IpAddress $SQLServer.IPAddress
     }
 }
 
-if ($LabDefinition.Machines | Where-Object { $_.Name -eq $ClientVM }) {} else { 
+if ($LabDefinition.Machines | Where-Object { $_.Name -eq $ClientVM }) {} else {
     #a
     #Development client in the child domain a with some extra tools
     Add-LabMachineDefinition -Name $ClientVM -Memory 1GB -IpAddress 192.168.2.54
 }
 
 foreach ($GenericHost in $GenericBlankBoxes) {
-    if ($LabDefinition.Machines | Where-Object { $_.Name -eq $GenericHost.Name }) {} else { 
-        Add-LabMachineDefinition -Name $GenericHost.Name -Memory $GenericHost.Memory -IpAddress $GenericHost.IPAddress -OperatingSystem $GenericHost.OperatingSystem 
+    if ($LabDefinition.Machines | Where-Object { $_.Name -eq $GenericHost.Name }) {} else {
+        Add-LabMachineDefinition -Name $GenericHost.Name -Memory $GenericHost.Memory -IpAddress $GenericHost.IPAddress -OperatingSystem $GenericHost.OperatingSystem
     }
 }
 
