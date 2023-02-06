@@ -74,7 +74,7 @@
     <DiskDefinitionFile Path="C:\ProgramData\AutomatedLab\Labs\SQLBits2023-TrainingDay\Disks.xml" />
   </DiskDefinitionFiles>
   <AzureSettings>
-    <LoadBalancerPortCounter>5028</LoadBalancerPortCounter>
+    <LoadBalancerPortCounter>5052</LoadBalancerPortCounter>
     <AutoShutdownTime>18:00:00</AutoShutdownTime>
     <AutoShutdownTimeZone />
     <AllowBastionHost>true</AllowBastionHost>

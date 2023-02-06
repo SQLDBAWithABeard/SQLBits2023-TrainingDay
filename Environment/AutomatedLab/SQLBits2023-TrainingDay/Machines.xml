@@ -1207,4 +1207,980 @@
     </InternalNotes>
     <SkipDeployment>false</SkipDeployment>
   </Machine>
+  <Machine>
+    <FriendlyName />
+    <LoadBalancerRdpPort>5029</LoadBalancerRdpPort>
+    <LoadBalancerWinRmHttpPort>5030</LoadBalancerWinRmHttpPort>
+    <LoadBalancerWinrmHttpsPort>5031</LoadBalancerWinrmHttpsPort>
+    <LoadBalancerSshPort>5032</LoadBalancerSshPort>
+    <LinuxPackageGroup />
+    <OrganizationalUnit />
+    <Processors>2</Processors>
+    <Name>Beard2019AG1</Name>
+    <Memory>1073741824</Memory>
+    <PreInstallationActivity />
+    <MinMemory>0</MinMemory>
+    <MaxMemory>0</MaxMemory>
+    <DiskSize>0</DiskSize>
+    <NetworkAdapters>
+      <NetworkAdapter>
+        <VirtualSwitch Name="SQLBits2023-TrainingDay" SwitchType="Internal" LocationName="westeurope" HostType="Azure" EnableManagementAdapter="true">
+          <Subnets />
+          <AddressSpace SerializationNetworkAddress="3232236032" SerializationAddressFamily="InterNetwork" SerializationCidr="24">
+            <IpAddress AddressAsString="192.168.2.0" />
+          </AddressSpace>
+          <ConnectToVnets />
+          <DnsServers>
+            <IPAddress AddressAsString="192.168.2.10" />
+          </DnsServers>
+          <IssuedIpAddresses />
+          <ManagementAdapter>
+            <Ipv4Address />
+            <Ipv4Gateway />
+            <Ipv4DnsServers />
+            <Ipv6Address />
+            <Ipv6Gateway />
+            <Ipv6DnsServers />
+            <AppendParentSuffixes>false</AppendParentSuffixes>
+            <AppendDNSSuffixes />
+            <RegisterInDNS>false</RegisterInDNS>
+            <DnsSuffixInDnsRegistration>false</DnsSuffixInDnsRegistration>
+            <NetBIOSOptions>Default</NetBIOSOptions>
+            <EnableLMHostsLookup>false</EnableLMHostsLookup>
+            <UseDhcp>false</UseDhcp>
+            <AccessVLANID>0</AccessVLANID>
+            <Default>false</Default>
+          </ManagementAdapter>
+        </VirtualSwitch>
+        <Ipv4Address>
+          <IPNetwork SerializationNetworkAddress="3232236089" SerializationAddressFamily="InterNetwork" SerializationCidr="24">
+            <IpAddress AddressAsString="192.168.2.57" />
+          </IPNetwork>
+        </Ipv4Address>
+        <Ipv4Gateway />
+        <Ipv4DnsServers>
+          <IPAddress AddressAsString="192.168.2.10" />
+          <IPAddress AddressAsString="192.168.2.11" />
+        </Ipv4DnsServers>
+        <Ipv6Address />
+        <Ipv6Gateway />
+        <Ipv6DnsServers />
+        <ConnectionSpecificDNSSuffix />
+        <AppendParentSuffixes>false</AppendParentSuffixes>
+        <AppendDNSSuffixes />
+        <RegisterInDNS>true</RegisterInDNS>
+        <DnsSuffixInDnsRegistration>false</DnsSuffixInDnsRegistration>
+        <NetBIOSOptions>Default</NetBIOSOptions>
+        <EnableLMHostsLookup>false</EnableLMHostsLookup>
+        <UseDhcp>false</UseDhcp>
+        <AccessVLANID>0</AccessVLANID>
+        <Default>false</Default>
+      </NetworkAdapter>
+    </NetworkAdapters>
+    <Roles>
+      <Role Name="SQLServer2019">
+        <Properties>
+          <Timestamp>
+            <dateTime>0001-01-01T00:00:00</dateTime>
+          </Timestamp>
+          <ID>
+            <guid>00000000-0000-0000-0000-000000000000</guid>
+          </ID>
+          <Metadata>
+            <ArrayOfString />
+          </Metadata>
+          <item>
+            <key>
+              <string>InstallSampleDatabase</string>
+            </key>
+            <value>
+              <string>true</string>
+            </value>
+          </item>
+        </Properties>
+      </Role>
+    </Roles>
+    <DomainName>jessandbeard.local</DomainName>
+    <IsDomainJoined>true</IsDomainJoined>
+    <HasDomainJoined>true</HasDomainJoined>
+    <InstallationUser>
+      <UserName>theboss</UserName>
+      <Password>dbatools.IO1</Password>
+    </InstallationUser>
+    <ToolsPath Path="\\automatedlabsourcesdnmat.file.core.windows.net\labsources\Tools" />
+    <ToolsPathDestination />
+    <UserLocale>en-GB</UserLocale>
+    <TimeZone>GMT Standard Time</TimeZone>
+    <OperatingSystem>
+      <OperatingSystemName>Windows Server 2016 Datacenter (Desktop Experience)</OperatingSystemName>
+      <Version>
+        <Major>10</Major>
+        <Minor>0</Minor>
+        <Build>-1</Build>
+        <Revision>-1</Revision>
+      </Version>
+      <PublishedDate>0001-01-01T00:00:00</PublishedDate>
+      <Size>0</Size>
+      <Installation>Server</Installation>
+      <LinuxPackageGroup />
+      <ImageIndex>0</ImageIndex>
+    </OperatingSystem>
+    <Disks />
+    <HostType>Azure</HostType>
+    <EnableWindowsFirewall>false</EnableWindowsFirewall>
+    <AutoLogonDomainName />
+    <AutoLogonUserName />
+    <AutoLogonPassword />
+    <AzureProperties>
+      <Timestamp>
+        <dateTime>0001-01-01T00:00:00</dateTime>
+      </Timestamp>
+      <ID>
+        <guid>00000000-0000-0000-0000-000000000000</guid>
+      </ID>
+      <Metadata>
+        <ArrayOfString />
+      </Metadata>
+    </AzureProperties>
+    <HypervProperties>
+      <Timestamp>
+        <dateTime>0001-01-01T00:00:00</dateTime>
+      </Timestamp>
+      <ID>
+        <guid>00000000-0000-0000-0000-000000000000</guid>
+      </ID>
+      <Metadata>
+        <ArrayOfString />
+      </Metadata>
+    </HypervProperties>
+    <Notes>
+      <Timestamp>
+        <dateTime>0001-01-01T00:00:00</dateTime>
+      </Timestamp>
+      <ID>
+        <guid>00000000-0000-0000-0000-000000000000</guid>
+      </ID>
+      <Metadata>
+        <ArrayOfString />
+      </Metadata>
+    </Notes>
+    <InternalNotes>
+      <Timestamp>
+        <dateTime>0001-01-01T00:00:00</dateTime>
+      </Timestamp>
+      <ID>
+        <guid>00000000-0000-0000-0000-000000000000</guid>
+      </ID>
+      <Metadata>
+        <ArrayOfString />
+      </Metadata>
+    </InternalNotes>
+    <SkipDeployment>false</SkipDeployment>
+  </Machine>
+  <Machine>
+    <FriendlyName />
+    <LoadBalancerRdpPort>5033</LoadBalancerRdpPort>
+    <LoadBalancerWinRmHttpPort>5034</LoadBalancerWinRmHttpPort>
+    <LoadBalancerWinrmHttpsPort>5035</LoadBalancerWinrmHttpsPort>
+    <LoadBalancerSshPort>5036</LoadBalancerSshPort>
+    <LinuxPackageGroup />
+    <OrganizationalUnit />
+    <Processors>2</Processors>
+    <Name>Beard2019AG2</Name>
+    <Memory>1073741824</Memory>
+    <PreInstallationActivity />
+    <MinMemory>0</MinMemory>
+    <MaxMemory>0</MaxMemory>
+    <DiskSize>0</DiskSize>
+    <NetworkAdapters>
+      <NetworkAdapter>
+        <VirtualSwitch Name="SQLBits2023-TrainingDay" SwitchType="Internal" LocationName="westeurope" HostType="Azure" EnableManagementAdapter="true">
+          <Subnets />
+          <AddressSpace SerializationNetworkAddress="3232236032" SerializationAddressFamily="InterNetwork" SerializationCidr="24">
+            <IpAddress AddressAsString="192.168.2.0" />
+          </AddressSpace>
+          <ConnectToVnets />
+          <DnsServers>
+            <IPAddress AddressAsString="192.168.2.10" />
+          </DnsServers>
+          <IssuedIpAddresses />
+          <ManagementAdapter>
+            <Ipv4Address />
+            <Ipv4Gateway />
+            <Ipv4DnsServers />
+            <Ipv6Address />
+            <Ipv6Gateway />
+            <Ipv6DnsServers />
+            <AppendParentSuffixes>false</AppendParentSuffixes>
+            <AppendDNSSuffixes />
+            <RegisterInDNS>false</RegisterInDNS>
+            <DnsSuffixInDnsRegistration>false</DnsSuffixInDnsRegistration>
+            <NetBIOSOptions>Default</NetBIOSOptions>
+            <EnableLMHostsLookup>false</EnableLMHostsLookup>
+            <UseDhcp>false</UseDhcp>
+            <AccessVLANID>0</AccessVLANID>
+            <Default>false</Default>
+          </ManagementAdapter>
+        </VirtualSwitch>
+        <Ipv4Address>
+          <IPNetwork SerializationNetworkAddress="3232236090" SerializationAddressFamily="InterNetwork" SerializationCidr="24">
+            <IpAddress AddressAsString="192.168.2.58" />
+          </IPNetwork>
+        </Ipv4Address>
+        <Ipv4Gateway />
+        <Ipv4DnsServers>
+          <IPAddress AddressAsString="192.168.2.10" />
+          <IPAddress AddressAsString="192.168.2.11" />
+        </Ipv4DnsServers>
+        <Ipv6Address />
+        <Ipv6Gateway />
+        <Ipv6DnsServers />
+        <ConnectionSpecificDNSSuffix />
+        <AppendParentSuffixes>false</AppendParentSuffixes>
+        <AppendDNSSuffixes />
+        <RegisterInDNS>true</RegisterInDNS>
+        <DnsSuffixInDnsRegistration>false</DnsSuffixInDnsRegistration>
+        <NetBIOSOptions>Default</NetBIOSOptions>
+        <EnableLMHostsLookup>false</EnableLMHostsLookup>
+        <UseDhcp>false</UseDhcp>
+        <AccessVLANID>0</AccessVLANID>
+        <Default>false</Default>
+      </NetworkAdapter>
+    </NetworkAdapters>
+    <Roles>
+      <Role Name="SQLServer2019">
+        <Properties>
+          <Timestamp>
+            <dateTime>0001-01-01T00:00:00</dateTime>
+          </Timestamp>
+          <ID>
+            <guid>00000000-0000-0000-0000-000000000000</guid>
+          </ID>
+          <Metadata>
+            <ArrayOfString />
+          </Metadata>
+          <item>
+            <key>
+              <string>InstallSampleDatabase</string>
+            </key>
+            <value>
+              <string>true</string>
+            </value>
+          </item>
+        </Properties>
+      </Role>
+    </Roles>
+    <DomainName>jessandbeard.local</DomainName>
+    <IsDomainJoined>true</IsDomainJoined>
+    <HasDomainJoined>true</HasDomainJoined>
+    <InstallationUser>
+      <UserName>theboss</UserName>
+      <Password>dbatools.IO1</Password>
+    </InstallationUser>
+    <ToolsPath Path="\\automatedlabsourcesdnmat.file.core.windows.net\labsources\Tools" />
+    <ToolsPathDestination />
+    <UserLocale>en-GB</UserLocale>
+    <TimeZone>GMT Standard Time</TimeZone>
+    <OperatingSystem>
+      <OperatingSystemName>Windows Server 2016 Datacenter (Desktop Experience)</OperatingSystemName>
+      <Version>
+        <Major>10</Major>
+        <Minor>0</Minor>
+        <Build>-1</Build>
+        <Revision>-1</Revision>
+      </Version>
+      <PublishedDate>0001-01-01T00:00:00</PublishedDate>
+      <Size>0</Size>
+      <Installation>Server</Installation>
+      <LinuxPackageGroup />
+      <ImageIndex>0</ImageIndex>
+    </OperatingSystem>
+    <Disks />
+    <HostType>Azure</HostType>
+    <EnableWindowsFirewall>false</EnableWindowsFirewall>
+    <AutoLogonDomainName />
+    <AutoLogonUserName />
+    <AutoLogonPassword />
+    <AzureProperties>
+      <Timestamp>
+        <dateTime>0001-01-01T00:00:00</dateTime>
+      </Timestamp>
+      <ID>
+        <guid>00000000-0000-0000-0000-000000000000</guid>
+      </ID>
+      <Metadata>
+        <ArrayOfString />
+      </Metadata>
+    </AzureProperties>
+    <HypervProperties>
+      <Timestamp>
+        <dateTime>0001-01-01T00:00:00</dateTime>
+      </Timestamp>
+      <ID>
+        <guid>00000000-0000-0000-0000-000000000000</guid>
+      </ID>
+      <Metadata>
+        <ArrayOfString />
+      </Metadata>
+    </HypervProperties>
+    <Notes>
+      <Timestamp>
+        <dateTime>0001-01-01T00:00:00</dateTime>
+      </Timestamp>
+      <ID>
+        <guid>00000000-0000-0000-0000-000000000000</guid>
+      </ID>
+      <Metadata>
+        <ArrayOfString />
+      </Metadata>
+    </Notes>
+    <InternalNotes>
+      <Timestamp>
+        <dateTime>0001-01-01T00:00:00</dateTime>
+      </Timestamp>
+      <ID>
+        <guid>00000000-0000-0000-0000-000000000000</guid>
+      </ID>
+      <Metadata>
+        <ArrayOfString />
+      </Metadata>
+    </InternalNotes>
+    <SkipDeployment>false</SkipDeployment>
+  </Machine>
+  <Machine>
+    <FriendlyName />
+    <LoadBalancerRdpPort>5037</LoadBalancerRdpPort>
+    <LoadBalancerWinRmHttpPort>5038</LoadBalancerWinRmHttpPort>
+    <LoadBalancerWinrmHttpsPort>5039</LoadBalancerWinrmHttpsPort>
+    <LoadBalancerSshPort>5040</LoadBalancerSshPort>
+    <LinuxPackageGroup />
+    <OrganizationalUnit />
+    <Processors>2</Processors>
+    <Name>Beard2019AG3</Name>
+    <Memory>1073741824</Memory>
+    <PreInstallationActivity />
+    <MinMemory>0</MinMemory>
+    <MaxMemory>0</MaxMemory>
+    <DiskSize>0</DiskSize>
+    <NetworkAdapters>
+      <NetworkAdapter>
+        <VirtualSwitch Name="SQLBits2023-TrainingDay" SwitchType="Internal" LocationName="westeurope" HostType="Azure" EnableManagementAdapter="true">
+          <Subnets />
+          <AddressSpace SerializationNetworkAddress="3232236032" SerializationAddressFamily="InterNetwork" SerializationCidr="24">
+            <IpAddress AddressAsString="192.168.2.0" />
+          </AddressSpace>
+          <ConnectToVnets />
+          <DnsServers>
+            <IPAddress AddressAsString="192.168.2.10" />
+          </DnsServers>
+          <IssuedIpAddresses />
+          <ManagementAdapter>
+            <Ipv4Address />
+            <Ipv4Gateway />
+            <Ipv4DnsServers />
+            <Ipv6Address />
+            <Ipv6Gateway />
+            <Ipv6DnsServers />
+            <AppendParentSuffixes>false</AppendParentSuffixes>
+            <AppendDNSSuffixes />
+            <RegisterInDNS>false</RegisterInDNS>
+            <DnsSuffixInDnsRegistration>false</DnsSuffixInDnsRegistration>
+            <NetBIOSOptions>Default</NetBIOSOptions>
+            <EnableLMHostsLookup>false</EnableLMHostsLookup>
+            <UseDhcp>false</UseDhcp>
+            <AccessVLANID>0</AccessVLANID>
+            <Default>false</Default>
+          </ManagementAdapter>
+        </VirtualSwitch>
+        <Ipv4Address>
+          <IPNetwork SerializationNetworkAddress="3232236091" SerializationAddressFamily="InterNetwork" SerializationCidr="24">
+            <IpAddress AddressAsString="192.168.2.59" />
+          </IPNetwork>
+        </Ipv4Address>
+        <Ipv4Gateway />
+        <Ipv4DnsServers>
+          <IPAddress AddressAsString="192.168.2.10" />
+          <IPAddress AddressAsString="192.168.2.11" />
+        </Ipv4DnsServers>
+        <Ipv6Address />
+        <Ipv6Gateway />
+        <Ipv6DnsServers />
+        <ConnectionSpecificDNSSuffix />
+        <AppendParentSuffixes>false</AppendParentSuffixes>
+        <AppendDNSSuffixes />
+        <RegisterInDNS>true</RegisterInDNS>
+        <DnsSuffixInDnsRegistration>false</DnsSuffixInDnsRegistration>
+        <NetBIOSOptions>Default</NetBIOSOptions>
+        <EnableLMHostsLookup>false</EnableLMHostsLookup>
+        <UseDhcp>false</UseDhcp>
+        <AccessVLANID>0</AccessVLANID>
+        <Default>false</Default>
+      </NetworkAdapter>
+    </NetworkAdapters>
+    <Roles>
+      <Role Name="SQLServer2019">
+        <Properties>
+          <Timestamp>
+            <dateTime>0001-01-01T00:00:00</dateTime>
+          </Timestamp>
+          <ID>
+            <guid>00000000-0000-0000-0000-000000000000</guid>
+          </ID>
+          <Metadata>
+            <ArrayOfString />
+          </Metadata>
+          <item>
+            <key>
+              <string>InstallSampleDatabase</string>
+            </key>
+            <value>
+              <string>true</string>
+            </value>
+          </item>
+        </Properties>
+      </Role>
+    </Roles>
+    <DomainName>jessandbeard.local</DomainName>
+    <IsDomainJoined>true</IsDomainJoined>
+    <HasDomainJoined>true</HasDomainJoined>
+    <InstallationUser>
+      <UserName>theboss</UserName>
+      <Password>dbatools.IO1</Password>
+    </InstallationUser>
+    <ToolsPath Path="\\automatedlabsourcesdnmat.file.core.windows.net\labsources\Tools" />
+    <ToolsPathDestination />
+    <UserLocale>en-GB</UserLocale>
+    <TimeZone>GMT Standard Time</TimeZone>
+    <OperatingSystem>
+      <OperatingSystemName>Windows Server 2016 Datacenter (Desktop Experience)</OperatingSystemName>
+      <Version>
+        <Major>10</Major>
+        <Minor>0</Minor>
+        <Build>-1</Build>
+        <Revision>-1</Revision>
+      </Version>
+      <PublishedDate>0001-01-01T00:00:00</PublishedDate>
+      <Size>0</Size>
+      <Installation>Server</Installation>
+      <LinuxPackageGroup />
+      <ImageIndex>0</ImageIndex>
+    </OperatingSystem>
+    <Disks />
+    <HostType>Azure</HostType>
+    <EnableWindowsFirewall>false</EnableWindowsFirewall>
+    <AutoLogonDomainName />
+    <AutoLogonUserName />
+    <AutoLogonPassword />
+    <AzureProperties>
+      <Timestamp>
+        <dateTime>0001-01-01T00:00:00</dateTime>
+      </Timestamp>
+      <ID>
+        <guid>00000000-0000-0000-0000-000000000000</guid>
+      </ID>
+      <Metadata>
+        <ArrayOfString />
+      </Metadata>
+    </AzureProperties>
+    <HypervProperties>
+      <Timestamp>
+        <dateTime>0001-01-01T00:00:00</dateTime>
+      </Timestamp>
+      <ID>
+        <guid>00000000-0000-0000-0000-000000000000</guid>
+      </ID>
+      <Metadata>
+        <ArrayOfString />
+      </Metadata>
+    </HypervProperties>
+    <Notes>
+      <Timestamp>
+        <dateTime>0001-01-01T00:00:00</dateTime>
+      </Timestamp>
+      <ID>
+        <guid>00000000-0000-0000-0000-000000000000</guid>
+      </ID>
+      <Metadata>
+        <ArrayOfString />
+      </Metadata>
+    </Notes>
+    <InternalNotes>
+      <Timestamp>
+        <dateTime>0001-01-01T00:00:00</dateTime>
+      </Timestamp>
+      <ID>
+        <guid>00000000-0000-0000-0000-000000000000</guid>
+      </ID>
+      <Metadata>
+        <ArrayOfString />
+      </Metadata>
+    </InternalNotes>
+    <SkipDeployment>false</SkipDeployment>
+  </Machine>
+  <Machine>
+    <FriendlyName />
+    <LoadBalancerRdpPort>5041</LoadBalancerRdpPort>
+    <LoadBalancerWinRmHttpPort>5042</LoadBalancerWinRmHttpPort>
+    <LoadBalancerWinrmHttpsPort>5043</LoadBalancerWinrmHttpsPort>
+    <LoadBalancerSshPort>5044</LoadBalancerSshPort>
+    <LinuxPackageGroup />
+    <OrganizationalUnit />
+    <Processors>2</Processors>
+    <Name>Beard2019AG4</Name>
+    <Memory>1073741824</Memory>
+    <PreInstallationActivity />
+    <MinMemory>0</MinMemory>
+    <MaxMemory>0</MaxMemory>
+    <DiskSize>0</DiskSize>
+    <NetworkAdapters>
+      <NetworkAdapter>
+        <VirtualSwitch Name="SQLBits2023-TrainingDay" SwitchType="Internal" LocationName="westeurope" HostType="Azure" EnableManagementAdapter="true">
+          <Subnets />
+          <AddressSpace SerializationNetworkAddress="3232236032" SerializationAddressFamily="InterNetwork" SerializationCidr="24">
+            <IpAddress AddressAsString="192.168.2.0" />
+          </AddressSpace>
+          <ConnectToVnets />
+          <DnsServers>
+            <IPAddress AddressAsString="192.168.2.10" />
+          </DnsServers>
+          <IssuedIpAddresses />
+          <ManagementAdapter>
+            <Ipv4Address />
+            <Ipv4Gateway />
+            <Ipv4DnsServers />
+            <Ipv6Address />
+            <Ipv6Gateway />
+            <Ipv6DnsServers />
+            <AppendParentSuffixes>false</AppendParentSuffixes>
+            <AppendDNSSuffixes />
+            <RegisterInDNS>false</RegisterInDNS>
+            <DnsSuffixInDnsRegistration>false</DnsSuffixInDnsRegistration>
+            <NetBIOSOptions>Default</NetBIOSOptions>
+            <EnableLMHostsLookup>false</EnableLMHostsLookup>
+            <UseDhcp>false</UseDhcp>
+            <AccessVLANID>0</AccessVLANID>
+            <Default>false</Default>
+          </ManagementAdapter>
+        </VirtualSwitch>
+        <Ipv4Address>
+          <IPNetwork SerializationNetworkAddress="3232236092" SerializationAddressFamily="InterNetwork" SerializationCidr="24">
+            <IpAddress AddressAsString="192.168.2.60" />
+          </IPNetwork>
+        </Ipv4Address>
+        <Ipv4Gateway />
+        <Ipv4DnsServers>
+          <IPAddress AddressAsString="192.168.2.10" />
+          <IPAddress AddressAsString="192.168.2.11" />
+        </Ipv4DnsServers>
+        <Ipv6Address />
+        <Ipv6Gateway />
+        <Ipv6DnsServers />
+        <ConnectionSpecificDNSSuffix />
+        <AppendParentSuffixes>false</AppendParentSuffixes>
+        <AppendDNSSuffixes />
+        <RegisterInDNS>true</RegisterInDNS>
+        <DnsSuffixInDnsRegistration>false</DnsSuffixInDnsRegistration>
+        <NetBIOSOptions>Default</NetBIOSOptions>
+        <EnableLMHostsLookup>false</EnableLMHostsLookup>
+        <UseDhcp>false</UseDhcp>
+        <AccessVLANID>0</AccessVLANID>
+        <Default>false</Default>
+      </NetworkAdapter>
+    </NetworkAdapters>
+    <Roles>
+      <Role Name="SQLServer2019">
+        <Properties>
+          <Timestamp>
+            <dateTime>0001-01-01T00:00:00</dateTime>
+          </Timestamp>
+          <ID>
+            <guid>00000000-0000-0000-0000-000000000000</guid>
+          </ID>
+          <Metadata>
+            <ArrayOfString />
+          </Metadata>
+          <item>
+            <key>
+              <string>InstallSampleDatabase</string>
+            </key>
+            <value>
+              <string>true</string>
+            </value>
+          </item>
+        </Properties>
+      </Role>
+    </Roles>
+    <DomainName>jessandbeard.local</DomainName>
+    <IsDomainJoined>true</IsDomainJoined>
+    <HasDomainJoined>true</HasDomainJoined>
+    <InstallationUser>
+      <UserName>theboss</UserName>
+      <Password>dbatools.IO1</Password>
+    </InstallationUser>
+    <ToolsPath Path="\\automatedlabsourcesdnmat.file.core.windows.net\labsources\Tools" />
+    <ToolsPathDestination />
+    <UserLocale>en-GB</UserLocale>
+    <TimeZone>GMT Standard Time</TimeZone>
+    <OperatingSystem>
+      <OperatingSystemName>Windows Server 2016 Datacenter (Desktop Experience)</OperatingSystemName>
+      <Version>
+        <Major>10</Major>
+        <Minor>0</Minor>
+        <Build>-1</Build>
+        <Revision>-1</Revision>
+      </Version>
+      <PublishedDate>0001-01-01T00:00:00</PublishedDate>
+      <Size>0</Size>
+      <Installation>Server</Installation>
+      <LinuxPackageGroup />
+      <ImageIndex>0</ImageIndex>
+    </OperatingSystem>
+    <Disks />
+    <HostType>Azure</HostType>
+    <EnableWindowsFirewall>false</EnableWindowsFirewall>
+    <AutoLogonDomainName />
+    <AutoLogonUserName />
+    <AutoLogonPassword />
+    <AzureProperties>
+      <Timestamp>
+        <dateTime>0001-01-01T00:00:00</dateTime>
+      </Timestamp>
+      <ID>
+        <guid>00000000-0000-0000-0000-000000000000</guid>
+      </ID>
+      <Metadata>
+        <ArrayOfString />
+      </Metadata>
+    </AzureProperties>
+    <HypervProperties>
+      <Timestamp>
+        <dateTime>0001-01-01T00:00:00</dateTime>
+      </Timestamp>
+      <ID>
+        <guid>00000000-0000-0000-0000-000000000000</guid>
+      </ID>
+      <Metadata>
+        <ArrayOfString />
+      </Metadata>
+    </HypervProperties>
+    <Notes>
+      <Timestamp>
+        <dateTime>0001-01-01T00:00:00</dateTime>
+      </Timestamp>
+      <ID>
+        <guid>00000000-0000-0000-0000-000000000000</guid>
+      </ID>
+      <Metadata>
+        <ArrayOfString />
+      </Metadata>
+    </Notes>
+    <InternalNotes>
+      <Timestamp>
+        <dateTime>0001-01-01T00:00:00</dateTime>
+      </Timestamp>
+      <ID>
+        <guid>00000000-0000-0000-0000-000000000000</guid>
+      </ID>
+      <Metadata>
+        <ArrayOfString />
+      </Metadata>
+    </InternalNotes>
+    <SkipDeployment>false</SkipDeployment>
+  </Machine>
+  <Machine>
+    <FriendlyName />
+    <LoadBalancerRdpPort>5045</LoadBalancerRdpPort>
+    <LoadBalancerWinRmHttpPort>5046</LoadBalancerWinRmHttpPort>
+    <LoadBalancerWinrmHttpsPort>5047</LoadBalancerWinrmHttpsPort>
+    <LoadBalancerSshPort>5048</LoadBalancerSshPort>
+    <LinuxPackageGroup />
+    <OrganizationalUnit />
+    <Processors>2</Processors>
+    <Name>WS2022Vm1</Name>
+    <Memory>1073741824</Memory>
+    <PreInstallationActivity />
+    <MinMemory>0</MinMemory>
+    <MaxMemory>0</MaxMemory>
+    <DiskSize>0</DiskSize>
+    <NetworkAdapters>
+      <NetworkAdapter>
+        <VirtualSwitch Name="SQLBits2023-TrainingDay" SwitchType="Internal" LocationName="westeurope" HostType="Azure" EnableManagementAdapter="true">
+          <Subnets />
+          <AddressSpace SerializationNetworkAddress="3232236032" SerializationAddressFamily="InterNetwork" SerializationCidr="24">
+            <IpAddress AddressAsString="192.168.2.0" />
+          </AddressSpace>
+          <ConnectToVnets />
+          <DnsServers>
+            <IPAddress AddressAsString="192.168.2.10" />
+          </DnsServers>
+          <IssuedIpAddresses />
+          <ManagementAdapter>
+            <Ipv4Address />
+            <Ipv4Gateway />
+            <Ipv4DnsServers />
+            <Ipv6Address />
+            <Ipv6Gateway />
+            <Ipv6DnsServers />
+            <AppendParentSuffixes>false</AppendParentSuffixes>
+            <AppendDNSSuffixes />
+            <RegisterInDNS>false</RegisterInDNS>
+            <DnsSuffixInDnsRegistration>false</DnsSuffixInDnsRegistration>
+            <NetBIOSOptions>Default</NetBIOSOptions>
+            <EnableLMHostsLookup>false</EnableLMHostsLookup>
+            <UseDhcp>false</UseDhcp>
+            <AccessVLANID>0</AccessVLANID>
+            <Default>false</Default>
+          </ManagementAdapter>
+        </VirtualSwitch>
+        <Ipv4Address>
+          <IPNetwork SerializationNetworkAddress="3232236093" SerializationAddressFamily="InterNetwork" SerializationCidr="24">
+            <IpAddress AddressAsString="192.168.2.61" />
+          </IPNetwork>
+        </Ipv4Address>
+        <Ipv4Gateway />
+        <Ipv4DnsServers>
+          <IPAddress AddressAsString="192.168.2.10" />
+          <IPAddress AddressAsString="192.168.2.11" />
+        </Ipv4DnsServers>
+        <Ipv6Address />
+        <Ipv6Gateway />
+        <Ipv6DnsServers />
+        <ConnectionSpecificDNSSuffix />
+        <AppendParentSuffixes>false</AppendParentSuffixes>
+        <AppendDNSSuffixes />
+        <RegisterInDNS>true</RegisterInDNS>
+        <DnsSuffixInDnsRegistration>false</DnsSuffixInDnsRegistration>
+        <NetBIOSOptions>Default</NetBIOSOptions>
+        <EnableLMHostsLookup>false</EnableLMHostsLookup>
+        <UseDhcp>false</UseDhcp>
+        <AccessVLANID>0</AccessVLANID>
+        <Default>false</Default>
+      </NetworkAdapter>
+    </NetworkAdapters>
+    <Roles />
+    <DomainName>jessandbeard.local</DomainName>
+    <IsDomainJoined>true</IsDomainJoined>
+    <HasDomainJoined>true</HasDomainJoined>
+    <InstallationUser>
+      <UserName>theboss</UserName>
+      <Password>dbatools.IO1</Password>
+    </InstallationUser>
+    <ToolsPath Path="G:\LabSources\Tools" />
+    <ToolsPathDestination />
+    <UserLocale>en-GB</UserLocale>
+    <TimeZone>GMT Standard Time</TimeZone>
+    <OperatingSystem>
+      <OperatingSystemName>Windows Server 2022 Datacenter (Desktop Experience)</OperatingSystemName>
+      <Version>
+        <Major>10</Major>
+        <Minor>0</Minor>
+        <Build>-1</Build>
+        <Revision>-1</Revision>
+      </Version>
+      <PublishedDate>0001-01-01T00:00:00</PublishedDate>
+      <Size>0</Size>
+      <Installation>Server</Installation>
+      <LinuxPackageGroup />
+      <ImageIndex>0</ImageIndex>
+    </OperatingSystem>
+    <Disks />
+    <HostType>Azure</HostType>
+    <EnableWindowsFirewall>false</EnableWindowsFirewall>
+    <AutoLogonDomainName />
+    <AutoLogonUserName />
+    <AutoLogonPassword />
+    <AzureProperties>
+      <Timestamp>
+        <dateTime>0001-01-01T00:00:00</dateTime>
+      </Timestamp>
+      <ID>
+        <guid>00000000-0000-0000-0000-000000000000</guid>
+      </ID>
+      <Metadata>
+        <ArrayOfString />
+      </Metadata>
+    </AzureProperties>
+    <HypervProperties>
+      <Timestamp>
+        <dateTime>0001-01-01T00:00:00</dateTime>
+      </Timestamp>
+      <ID>
+        <guid>00000000-0000-0000-0000-000000000000</guid>
+      </ID>
+      <Metadata>
+        <ArrayOfString />
+      </Metadata>
+    </HypervProperties>
+    <Notes>
+      <Timestamp>
+        <dateTime>0001-01-01T00:00:00</dateTime>
+      </Timestamp>
+      <ID>
+        <guid>00000000-0000-0000-0000-000000000000</guid>
+      </ID>
+      <Metadata>
+        <ArrayOfString />
+      </Metadata>
+    </Notes>
+    <InternalNotes>
+      <Timestamp>
+        <dateTime>0001-01-01T00:00:00</dateTime>
+      </Timestamp>
+      <ID>
+        <guid>00000000-0000-0000-0000-000000000000</guid>
+      </ID>
+      <Metadata>
+        <ArrayOfString />
+      </Metadata>
+    </InternalNotes>
+    <SkipDeployment>false</SkipDeployment>
+  </Machine>
+  <Machine>
+    <FriendlyName />
+    <LoadBalancerRdpPort>5049</LoadBalancerRdpPort>
+    <LoadBalancerWinRmHttpPort>5050</LoadBalancerWinRmHttpPort>
+    <LoadBalancerWinrmHttpsPort>5051</LoadBalancerWinrmHttpsPort>
+    <LoadBalancerSshPort>5052</LoadBalancerSshPort>
+    <LinuxPackageGroup />
+    <OrganizationalUnit />
+    <Processors>2</Processors>
+    <Name>WS2019Vm1</Name>
+    <Memory>1073741824</Memory>
+    <PreInstallationActivity />
+    <MinMemory>0</MinMemory>
+    <MaxMemory>0</MaxMemory>
+    <DiskSize>0</DiskSize>
+    <NetworkAdapters>
+      <NetworkAdapter>
+        <VirtualSwitch Name="SQLBits2023-TrainingDay" SwitchType="Internal" LocationName="westeurope" HostType="Azure" EnableManagementAdapter="true">
+          <Subnets />
+          <AddressSpace SerializationNetworkAddress="3232236032" SerializationAddressFamily="InterNetwork" SerializationCidr="24">
+            <IpAddress AddressAsString="192.168.2.0" />
+          </AddressSpace>
+          <ConnectToVnets />
+          <DnsServers>
+            <IPAddress AddressAsString="192.168.2.10" />
+          </DnsServers>
+          <IssuedIpAddresses />
+          <ManagementAdapter>
+            <Ipv4Address />
+            <Ipv4Gateway />
+            <Ipv4DnsServers />
+            <Ipv6Address />
+            <Ipv6Gateway />
+            <Ipv6DnsServers />
+            <AppendParentSuffixes>false</AppendParentSuffixes>
+            <AppendDNSSuffixes />
+            <RegisterInDNS>false</RegisterInDNS>
+            <DnsSuffixInDnsRegistration>false</DnsSuffixInDnsRegistration>
+            <NetBIOSOptions>Default</NetBIOSOptions>
+            <EnableLMHostsLookup>false</EnableLMHostsLookup>
+            <UseDhcp>false</UseDhcp>
+            <AccessVLANID>0</AccessVLANID>
+            <Default>false</Default>
+          </ManagementAdapter>
+        </VirtualSwitch>
+        <Ipv4Address>
+          <IPNetwork SerializationNetworkAddress="3232236094" SerializationAddressFamily="InterNetwork" SerializationCidr="24">
+            <IpAddress AddressAsString="192.168.2.62" />
+          </IPNetwork>
+        </Ipv4Address>
+        <Ipv4Gateway />
+        <Ipv4DnsServers>
+          <IPAddress AddressAsString="192.168.2.10" />
+          <IPAddress AddressAsString="192.168.2.11" />
+        </Ipv4DnsServers>
+        <Ipv6Address />
+        <Ipv6Gateway />
+        <Ipv6DnsServers />
+        <ConnectionSpecificDNSSuffix />
+        <AppendParentSuffixes>false</AppendParentSuffixes>
+        <AppendDNSSuffixes />
+        <RegisterInDNS>true</RegisterInDNS>
+        <DnsSuffixInDnsRegistration>false</DnsSuffixInDnsRegistration>
+        <NetBIOSOptions>Default</NetBIOSOptions>
+        <EnableLMHostsLookup>false</EnableLMHostsLookup>
+        <UseDhcp>false</UseDhcp>
+        <AccessVLANID>0</AccessVLANID>
+        <Default>false</Default>
+      </NetworkAdapter>
+    </NetworkAdapters>
+    <Roles />
+    <DomainName>jessandbeard.local</DomainName>
+    <IsDomainJoined>true</IsDomainJoined>
+    <HasDomainJoined>true</HasDomainJoined>
+    <InstallationUser>
+      <UserName>theboss</UserName>
+      <Password>dbatools.IO1</Password>
+    </InstallationUser>
+    <ToolsPath Path="G:\LabSources\Tools" />
+    <ToolsPathDestination />
+    <UserLocale>en-GB</UserLocale>
+    <TimeZone>GMT Standard Time</TimeZone>
+    <OperatingSystem>
+      <OperatingSystemName>Windows Server 2022 Datacenter (Desktop Experience)</OperatingSystemName>
+      <Version>
+        <Major>10</Major>
+        <Minor>0</Minor>
+        <Build>-1</Build>
+        <Revision>-1</Revision>
+      </Version>
+      <PublishedDate>0001-01-01T00:00:00</PublishedDate>
+      <Size>0</Size>
+      <Installation>Server</Installation>
+      <LinuxPackageGroup />
+      <ImageIndex>0</ImageIndex>
+    </OperatingSystem>
+    <Disks />
+    <HostType>Azure</HostType>
+    <EnableWindowsFirewall>false</EnableWindowsFirewall>
+    <AutoLogonDomainName />
+    <AutoLogonUserName />
+    <AutoLogonPassword />
+    <AzureProperties>
+      <Timestamp>
+        <dateTime>0001-01-01T00:00:00</dateTime>
+      </Timestamp>
+      <ID>
+        <guid>00000000-0000-0000-0000-000000000000</guid>
+      </ID>
+      <Metadata>
+        <ArrayOfString />
+      </Metadata>
+    </AzureProperties>
+    <HypervProperties>
+      <Timestamp>
+        <dateTime>0001-01-01T00:00:00</dateTime>
+      </Timestamp>
+      <ID>
+        <guid>00000000-0000-0000-0000-000000000000</guid>
+      </ID>
+      <Metadata>
+        <ArrayOfString />
+      </Metadata>
+    </HypervProperties>
+    <Notes>
+      <Timestamp>
+        <dateTime>0001-01-01T00:00:00</dateTime>
+      </Timestamp>
+      <ID>
+        <guid>00000000-0000-0000-0000-000000000000</guid>
+      </ID>
+      <Metadata>
+        <ArrayOfString />
+      </Metadata>
+    </Notes>
+    <InternalNotes>
+      <Timestamp>
+        <dateTime>0001-01-01T00:00:00</dateTime>
+      </Timestamp>
+      <ID>
+        <guid>00000000-0000-0000-0000-000000000000</guid>
+      </ID>
+      <Metadata>
+        <ArrayOfString />
+      </Metadata>
+    </InternalNotes>
+    <SkipDeployment>false</SkipDeployment>
+  </Machine>
 </ListXmlStoreOfMachine>
