@@ -207,6 +207,11 @@ Install-Lab -Verbose
 
 Show-LabDeploymentSummary -Detailed
 
+foreach($SQLServer in $SQLServers){
+    $ActivityName = "SQL Start for {0}" -f  $SQLServer.Name
+    Invoke-LabCommand -FilePath .\Environment\AutomatedLab\startsql.ps1 -ComputerName $SQLServer.Name -DoNotUseCredSsp -ActivityName $ActivityName
+}
+
 Invoke-LabCommand -FilePath .\Environment\AutomatedLab\chocoinstall.ps1 -ComputerName $ClientVM -DoNotUseCredSsp -ActivityName 'Chocolatey Install'
 
 Restart-LabVM -ComputerName $ClientVM
