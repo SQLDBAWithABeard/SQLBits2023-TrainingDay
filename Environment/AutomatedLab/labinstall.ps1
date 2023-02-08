@@ -271,7 +271,7 @@ foreach ($VM in @($DemoMachine, $CLientVM)) {
 
 Get-ChildItem .\Environment\AutomatedLab\SqlSetup -File | Sort-Object Name | ForEach-Object {
     Write-PSFMessage -Message ('Executing: {0}' -f $_.Name) -Level Output
-    Invoke-LabCommand -FilePath $_.FullName -ComputerName $ClientVM -DoNotUseCredSsp -ActivityName 'SQLSetUP'
+    Invoke-LabCommand -FilePath $_.FullName -ComputerName $ClientVM -DoNotUseCredSsp -ActivityName ('SQLSetUP - {0}' -f $_.Name)
 }
 
 Invoke-LabCommand -FilePath .\Environment\AutomatedLab\fileserversetup.ps1 -ComputerName $FileServer -DoNotUseCredSsp -ActivityName 'FileServer'
