@@ -267,8 +267,6 @@ foreach ($VM in @($DemoMachine, $CLientVM)) {
         Write-PSFMessage -Message $Message -Level Host
         Invoke-LabCommand -FilePath $script.filePath -ComputerName $VM -DoNotUseCredSsp -ActivityName $script.ActivityName
     }
-    Write-PSFMessage -Message ('Executing: {0}' -f $_.Name) -Level Output
-    Invoke-LabCommand -FilePath .\Environment\AutomatedLab\chocoinstall.ps1 -ComputerName $VM -DoNotUseCredSsp -ActivityName 'Chocolatey Install'
 }
 
 Get-ChildItem .\Environment\AutomatedLab\SqlSetup -File | Sort-Object Name | ForEach-Object {
