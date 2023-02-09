@@ -32,19 +32,42 @@ $SQLHosts | ForEach-Object {
             Get-Random -InputObject $DBNames -Count (25 - $CountofDbs) | ForEach-Object {
                 $Message = "Creating database {0}" -f $_
                 Write-PSFMessage -Level Host -Message $Message
-                Restore-DbaDatabase -SqlInstance localhost -Path "$BackupPath\AdventureWorks_FULL_COPY_ONLY.bak" -Database $_ -WithReplace -SqlCredential $domaincred -ReplaceDbNameInFile 
+                Restore-DbaDatabase -SqlInstance localhost -Path "$BackupPath\AdventureWorks_FULL_COPY_ONLY.bak" -Database $_ -WithReplace -SqlCredential $domaincred -ReplaceDbNameInFile
             }
         }
+
+        $Message = "Setting recovery model to full for databases on {0}" -f ($ENV:COMPUTERNAME)
+        Write-PSFMessage -Level Host -Message $Message
+
+        Get-DbaDatabase -SqlInstance Jess2017 -ExcludeSystem -ExcludeDatabase ReportServer, ReportServerTempdb -SqlCredential $domaincred |Set-DbaDbRecoveryModel -RecoveryModel Full -Confirm:$false
+
+        $Message = "Setting compatability for some databases on {0}" -f ($ENV:COMPUTERNAME)
+        Write-PSFMessage -Level Host -Message $Message
+
+        $MaxCompatabilityLevel = (Get-DbaDbCompatibility -SqlInstance localhost -SqlCredential $domaincred).Compatability
+
+        $CompatabilityLevels = @(
+            'Version90',
+            'Version100',
+            'Version110',
+            'Version120',
+            'Version130',
+            'Version140',
+            'Version150',
+            'Version160'
+        )
+
+
 
         $Message = "Installing maintenance solution on {0}" -f ($ENV:COMPUTERNAME)
         Write-PSFMessage -Level Host -Message $Message
 
-        Install-DbaMaintenanceSolution -SqlInstance localhost -Database master -SqlCredential $domaincred -BackupLocation $BackupPath -InstallJobs -ReplaceExisting 
+        Install-DbaMaintenanceSolution -SqlInstance localhost -Database master -SqlCredential $domaincred -BackupLocation $BackupPath -InstallJobs -ReplaceExisting
         Set-Service -Name SQLServerAgent -StartupType Automatic
         Start-Service -Name SQLServerAgent
 
         $jobs = 'DatabaseBackup - SYSTEM_DATABASES - FULL', 'DatabaseBackup - USER_DATABASES - FULL', 'DatabaseBackup - USER_DATABASES - DIFF', 'DatabaseBackup - USER_DATABASES - LOG'
-        
+
         $jobs | ForEach-Object {
             Start-DbaAgentJob -SqlInstance localhost -Job $_ -SqlCredential $domaincred
         }
