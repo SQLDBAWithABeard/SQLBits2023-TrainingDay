@@ -238,45 +238,36 @@ Show-LabDeploymentSummary -Detailed
 # add inbound firewall rule for TCP 1433 and remote management
 foreach ($Machine in $AllMachines) {
     $ActivityName = "firewall rules for {0}" -f $Machine.Name
-    Invoke-LabCommand -FilePath .\Environment\AutomatedLab\firewall.ps1 -ComputerName $Machine.Name -DoNotUseCredSsp -ActivityName $ActivityName
+    Invoke-LabCommand -FilePath .\Environment\AutomatedLab\AllMachines\firewall.ps1 -ComputerName $Machine.Name -DoNotUseCredSsp -ActivityName $ActivityName
 }
 
 foreach ($SQLServer in $SQLServers) {
     $ActivityName = "SQL Start for {0}" -f $SQLServer.Name
-    Invoke-LabCommand -FilePath .\Environment\AutomatedLab\startsql.ps1 -ComputerName $SQLServer.Name -DoNotUseCredSsp -ActivityName $ActivityName
+    Invoke-LabCommand -FilePath .\Environment\AutomatedLab\AllMachines\startsql.ps1 -ComputerName $SQLServer.Name -DoNotUseCredSsp -ActivityName $ActivityName
 }
 
 
 foreach ($VM in @($DemoMachine, $CLientVM)) {
-    $scripts = @(
-        @{
-            filePath     = '.\Environment\AutomatedLab\chocoinstall.ps1'
-            ActivityName = 'Chocolatey Install'
-        },
-        @{
-            filePath     = '.\Environment\AutomatedLab\code-setup.ps1'
-            ActivityName = 'VS Code Setup'
-        },
-        @{
-            filePath     = '.\Environment\AutomatedLab\modules.ps1'
-            ActivityName = 'Install Modules'
+
+    Get-ChildItem .\Environment\AutomatedLab\ClientMachines -File | Sort-Object Name | ForEach-Object {
+        $ActivityName = 'Client VM {0} Setup - {1}' -f $Vm, ($_.Name -replace '.ps1', '' )
+        Write-PSFMessage -Message $ActivityName -Level Output
+        Invoke-LabCommand -FilePath $_.FullName -ComputerName $Vm -DoNotUseCredSsp -ActivityName $ActivityName
+        if ($_.Name -eq '02-chocolatey-install.ps1') {
+            Restart-LabVM -Name $VM -Wait
         }
-    )
-    foreach ($script in $scripts) {
-        $Message = 'Executing: {0} on {1}' -f $script.filePath, $VM
-        Write-PSFMessage -Message $Message -Level Host
-        Invoke-LabCommand -FilePath $script.filePath -ComputerName $VM -DoNotUseCredSsp -ActivityName $script.ActivityName
     }
 }
 
 Get-ChildItem .\Environment\AutomatedLab\SqlSetup -File | Sort-Object Name | ForEach-Object {
-    Write-PSFMessage -Message ('Executing: {0}' -f $_.Name) -Level Output
-    Invoke-LabCommand -FilePath $_.FullName -ComputerName $ClientVM -DoNotUseCredSsp -ActivityName 'SQLSetUP'
+    $ActivityName = 'SQL Setup - {0}' -f ($_.Name -replace '.ps1', '' )
+    Write-PSFMessage -Message $ActivityName -Level Output
+    Invoke-LabCommand -FilePath $_.FullName -ComputerName $DemoMachine -DoNotUseCredSsp -ActivityName $ActivityName
 }
 
 Invoke-LabCommand -FilePath .\Environment\AutomatedLab\fileserversetup.ps1 -ComputerName $FileServer -DoNotUseCredSsp -ActivityName 'FileServer'
 
-Invoke-LabCommand -FilePath .\Environment\AutomatedLab\SQLBackupsSetup.ps1 -ComputerName $ClientVM -DoNotUseCredSsp -ActivityName 'SQLBackup Set up'
+Invoke-LabCommand -FilePath .\Environment\AutomatedLab\SQLBackupsSetup.ps1 -ComputerName $DemoMachine -DoNotUseCredSsp -ActivityName 'SQLBackup Set up'
 
 Stop-LabVM -All
 

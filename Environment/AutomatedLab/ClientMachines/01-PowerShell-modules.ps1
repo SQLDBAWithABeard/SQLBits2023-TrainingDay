@@ -23,15 +23,22 @@ foreach ($module in $modules) {
     }
 }
 
-if((Get-WindowsFeature -Name RSAT).InstallState -ne 'Installed') {
-    Install-WindowsFeature RSAT
+switch ($eNV:computername) {
+    RainbowDragon {
+        if (( Get-WindowsCapability -Name Rsat.ActiveDirectory*  -Online).State -eq 'NotPresent') {
+            Write-Host "Installing RSAT"
+            Get-WindowsCapability -Name Rsat.ActiveDirectory*  -Online| Add-WindowsCapability -Online
+        }else{
+            Write-Host "RSAT installed"
+        }
+    }
+    POSHClient1 {
+        if ((Get-WindowsFeature -Name RSAT).InstallState -ne 'Installed') {
+            Write-Host "Installing RSAT"
+            Install-WindowsFeature RSAT
+        }else{
+            Write-Host "RSAT installed"
+        }
+    }
 }
 
-
-# https://wmatthyssen.com/2022/06/16/powershell-script-set-customized-server-settings-on-azure-windows-vms-running-windows-server-2016-windows-server-2019-or-windows-server-2022/
-$remoteEventLogFirewallRuleDisplayGroup = "Remote Event Log Management"
-try {
-    Get-NetFirewallRule -DisplayGroup $remoteEventLogFirewallRuleDisplayGroup -Enabled true -ErrorAction Stop | Out-Null
-} catch {
-    Set-NetFirewallRule -DisplayGroup $remoteEventLogFirewallRuleDisplayGroup -Enabled true -PassThru | Out-Null
-}
