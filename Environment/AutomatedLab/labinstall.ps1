@@ -239,6 +239,11 @@ Show-LabDeploymentSummary -Detailed
 foreach ($Machine in $AllMachines) {
     $ActivityName = "firewall rules for {0}" -f $Machine.Name
     Invoke-LabCommand -FilePath .\Environment\AutomatedLab\AllMachines\firewall.ps1 -ComputerName $Machine.Name -DoNotUseCredSsp -ActivityName $ActivityName
+
+    Copy-LabFileItem -Path Environment\AutomatedLab\AllMachines\logon.bgi -ComputerName $Machine.Name -DestinationFolderPath C:\BgInfo
+
+    $ActivityName = "BGInfo for {0}" -f $Machine.Name
+    Invoke-LabCommand -FilePath .\Environment\AutomatedLab\AllMachines\bginfo.ps1 -ComputerName $Machine.Name  -ActivityName $ActivityName
 }
 
 foreach ($SQLServer in $SQLServers) {

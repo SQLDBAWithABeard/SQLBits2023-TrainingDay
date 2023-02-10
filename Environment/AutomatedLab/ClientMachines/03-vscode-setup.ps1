@@ -1,3 +1,11 @@
+oh-my-posh font install Meslo
+
+Write-Host "Setting up Windows Terminal"
+
+$WindowsTerminalSettingsFile = Get-Item $env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal*\LocalState\settings.json
+$WindowsTerminalSettings = Get-Content $WindowsTerminalSettingsFile.FullName | ConvertFrom-Json
+$WindowsTerminalSettings.profiles.defaults = @{font = @{ face= "MesloLGM NF"}}
+$WindowsTerminalSettings| ConvertTo-Json -Depth 5 |Set-Content  $WindowsTerminalSettingsFile
 
 code --install-extension BeardedBear.beardedtheme
 code --install-extension eamodio.gitlens
