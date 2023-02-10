@@ -1,11 +1,17 @@
 oh-my-posh font install Meslo
+switch ($eNV:computername) {
+    RainbowDragon {
+        Write-Host "Setting up Windows Terminal"
 
-Write-Host "Setting up Windows Terminal"
-
-$WindowsTerminalSettingsFile = Get-Item $env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal*\LocalState\settings.json
-$WindowsTerminalSettings = Get-Content $WindowsTerminalSettingsFile.FullName | ConvertFrom-Json
-$WindowsTerminalSettings.profiles.defaults = @{font = @{ face= "MesloLGM NF"}}
-$WindowsTerminalSettings| ConvertTo-Json -Depth 5 |Set-Content  $WindowsTerminalSettingsFile
+        $WindowsTerminalSettingsFile = Get-Item $env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal*\LocalState\settings.json
+        $WindowsTerminalSettings = Get-Content $WindowsTerminalSettingsFile.FullName | ConvertFrom-Json
+        $WindowsTerminalSettings.profiles.defaults = @{font = @{ face = "MesloLGM NF" } }
+        $WindowsTerminalSettings | ConvertTo-Json -Depth 5 | Set-Content  $WindowsTerminalSettingsFile
+    }
+    PoshClient1 {
+        Write-Host "No Windows Termainal for you rotten server OS"
+    }
+}
 
 code --install-extension BeardedBear.beardedtheme
 code --install-extension eamodio.gitlens
@@ -53,3 +59,59 @@ if (-not (Test-Path $Repo)) {
 
 Set-Location $repo
 git clone https://github.com/SQLDBAWithABeard/SQLBits2023-TrainingDay.git
+
+Set-Location $repo\SQLBits2023-TrainingDay
+git pull
+$ProfileTxt = @"
+function Load-Profile {
+    Import-Module posh-git
+    Import-Module -Name Terminal-Icons
+    `$env:POSH_THEMES_PATH = '{0}\Programs\oh-my-posh\themes' -f `$env:LOCALAPPDATA
+
+    function global:Set-PoshPrompt {
+        param(
+            `$theme
+        )
+        & oh-my-posh.exe init pwsh --config "`$env:POSH_THEMES_PATH\`$theme.omp.json" | Invoke-Expression
+    }
+    # Create scriptblock that collects information and name it
+    Register-PSFTeppScriptblock -Name "poshthemes" -ScriptBlock { Get-ChildItem `$env:POSH_THEMES_PATH | Select-Object -ExpandProperty Name -Unique | ForEach-Object { `$_ -replace '\.omp\.json$', '' } }
+    #Assign scriptblock to function
+    Register-PSFTeppArgumentCompleter -Command Set-PoshPrompt -Parameter theme -Name poshthemes
+
+    Set-PoshPrompt -Theme sonicboom_dark
+
+    if (`$psstyle) {
+        `$psstyle.FileInfo.Directory = `$psstyle.FileInfo.Executable = `$psstyle.FileInfo.SymbolicLink = ""
+        `$PSStyle.FileInfo.Extension.Clear()
+        `$PSStyle.Formatting.TableHeader = ""
+        `$PsStyle.Formatting.FormatAccent = ""
+    }
+}
+function Start-Demo {
+    Write-PSfMessage -Level Significant -Message "Starting The Good Stuff"
+    `$repo = 'C:\TheGoodStuff'
+    Set-Location `$repo
+    git clone https://github.com/SQLDBAWithABeard/SQLBits2023-TrainingDay.git
+    Set-Location `$repo\SQLBits2023-TrainingDay
+    git pull
+    code `$repo\SQLBits2023-TrainingDay
+}
+"Load-Profile for full profile"
+"Then Start-Demo for the Good Stuff"
+function prompt {
+    #Load-Profile
+ "PS > "
+}
+
+"@ + (Get-Content -Path Environment\AutomatedLab\global\01-variables.ps1 -Raw)
+
+
+$ProfilePath = 'C:\Program Files\PowerShell\7\profile.ps1'
+
+if (-not (Test-Path $ProfilePath)) {
+    Write-Host "Creating Profile"
+    New-Item -ItemType File -Path $ProfilePath
+}
+Write-Host "Set Profile"
+$ProfileTxt | Set-Content $ProfilePath
