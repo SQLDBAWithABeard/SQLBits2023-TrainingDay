@@ -259,7 +259,7 @@ foreach ($VM in @($DemoMachine, $CLientVM)) {
         Write-PSFMessage -Message $ActivityName -Level Output
         Invoke-LabCommand -FilePath $_.FullName -ComputerName $Vm -DoNotUseCredSsp -ActivityName $ActivityName
         if ($_.Name -eq '02-chocolatey-install.ps1') {
-            Restart-LabVM -Name $VM -Wait
+           Restart-LabVM -Name $VM -Wait
         }
     }
 }
