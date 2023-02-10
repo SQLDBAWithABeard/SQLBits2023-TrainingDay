@@ -78,7 +78,15 @@ switch ($eNV:computername) {
                 `$PsStyle.Formatting.FormatAccent = ""
             }
         }
+        function Start-Demo {
+            Write-PSfMessage -Level Significant -Message "Starting The Good Stuff"
+            $Repo = 'C:\TheGoodStuff'
+            Set-Location $repo
+            git clone https://github.com/SQLDBAWithABeard/SQLBits2023-TrainingDay.git
+            code $Repo\SQLBits2023-TrainingDay
+        }
         "Load-Profile for full profile"
+        "Then Start-Demo for the Good Stuff"
         function prompt {
             #Load-Profile
          "PS > "

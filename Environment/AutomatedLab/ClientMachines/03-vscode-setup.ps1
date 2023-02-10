@@ -42,3 +42,14 @@ code --install-extension redhat.vscode-yaml
 code --install-extension streetsidesoftware.code-spell-checker
 code --install-extension TylerLeonhardt.vscode-inline-values-powershell
 code --install-extension vsls-contrib.codetour
+
+Write-Host "Setting up Repo"
+$Repo = 'C:\TheGoodStuff'
+
+if (-not (Test-Path $Repo)) {
+    Write-Host "Creating Profile"
+    New-Item -ItemType Directory -Path $Repo
+}
+
+Set-Location $repo
+git clone https://github.com/SQLDBAWithABeard/SQLBits2023-TrainingDay.git
