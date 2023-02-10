@@ -36,6 +36,8 @@ foreach ($module in $modules) {
 
 }
 
+
+
 switch ($eNV:computername) {
     RainbowDragon {
         if (( Get-WindowsCapability -Name Rsat.ActiveDirectory*  -Online).State -eq 'NotPresent') {
@@ -52,55 +54,6 @@ switch ($eNV:computername) {
             Write-Host "installing oh-my-posh "
             Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://ohmyposh.dev/install.ps1'))
         }
-        $ProfileTxt = @"
-        function Load-Profile {
-            Import-Module posh-git
-            Import-Module -Name Terminal-Icons
-            `$env:POSH_THEMES_PATH = '{0}\Programs\oh-my-posh\themes' -f `$env:LOCALAPPDATA
-
-            function global:Set-PoshPrompt {
-                param(
-                    `$theme
-                )
-                & oh-my-posh.exe init pwsh --config "`$env:POSH_THEMES_PATH\`$theme.omp.json" | Invoke-Expression
-            }
-            # Create scriptblock that collects information and name it
-            Register-PSFTeppScriptblock -Name "poshthemes" -ScriptBlock { Get-ChildItem `$env:POSH_THEMES_PATH | Select-Object -ExpandProperty Name -Unique | ForEach-Object { `$_ -replace '\.omp\.json$', '' } }
-            #Assign scriptblock to function
-            Register-PSFTeppArgumentCompleter -Command Set-PoshPrompt -Parameter theme -Name poshthemes
-
-            Set-PoshPrompt -Theme sonicboom_dark
-
-            if (`$psstyle) {
-                `$psstyle.FileInfo.Directory = `$psstyle.FileInfo.Executable = `$psstyle.FileInfo.SymbolicLink = ""
-                `$PSStyle.FileInfo.Extension.Clear()
-                `$PSStyle.Formatting.TableHeader = ""
-                `$PsStyle.Formatting.FormatAccent = ""
-            }
-        }
-        function Start-Demo {
-            Write-PSfMessage -Level Significant -Message "Starting The Good Stuff"
-            $Repo = 'C:\TheGoodStuff'
-            Set-Location $repo
-            git clone https://github.com/SQLDBAWithABeard/SQLBits2023-TrainingDay.git
-            code $Repo\SQLBits2023-TrainingDay
-        }
-        "Load-Profile for full profile"
-        "Then Start-Demo for the Good Stuff"
-        function prompt {
-            #Load-Profile
-         "PS > "
-        }
-
-"@
-        $ProfilePath = 'C:\Program Files\PowerShell\7\profile.ps1'
-
-        if (-not (Test-Path $ProfilePath)) {
-            Write-Host "Creating Profile"
-            New-Item -ItemType File -Path $ProfilePath
-        }
-        Write-Host "Set Profile"
-        $ProfileTxt | Set-Content $ProfilePath
     }
     POSHClient1 {
         if ((Get-WindowsFeature -Name RSAT).InstallState -ne 'Installed') {
@@ -111,4 +64,3 @@ switch ($eNV:computername) {
         }
     }
 }
-
