@@ -8,6 +8,11 @@ $FireWallsConfig = @(
         Protocol  = 'TCP'
         LocalPort = '1433'
     }
+    @{DisplayName = 'SQL Server - AGs'
+        Direction = 'Inbound'
+        Protocol  = 'TCP'
+        LocalPort = '5022'
+    }
 )
 
 foreach ($FirewallName in $FirewallNames) {
