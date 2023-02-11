@@ -78,8 +78,32 @@ function Load-Profile {
     Register-PSFTeppScriptblock -Name "poshthemes" -ScriptBlock { Get-ChildItem `$env:POSH_THEMES_PATH | Select-Object -ExpandProperty Name -Unique | ForEach-Object { `$_ -replace '\.omp\.json$', '' } }
     #Assign scriptblock to function
     Register-PSFTeppArgumentCompleter -Command Set-PoshPrompt -Parameter theme -Name poshthemes
+    `$__Date = Get-Date -Format 'dd-MM'
+    if(`$__Date -eq '14-03'){
+        Set-PoshPrompt -Theme lambdageneration
+    }else{
+        `$themes = @(
+            'neko',
+            'sonicboom_dark',
+            'neko',
+            'easy-term',
+            'if_tea',
+            'neko',
+            'kushal'
+            'nigfht-owl',
+            'neko',
+            'powerlevel10k_rainbow',
+            'quick-term',
+            'neko',
+            'stelbent.minimal',
+            'tokyo',
+            'neko',
+            'unicorn',
+            'wholespace'
+        )
+        Set-PoshPrompt -Theme (Get-Random -InputObject `$themes)
+    }
 
-    Set-PoshPrompt -Theme sonicboom_dark
 
     if (`$psstyle) {
         `$psstyle.FileInfo.Directory = `$psstyle.FileInfo.Executable = `$psstyle.FileInfo.SymbolicLink = ""
