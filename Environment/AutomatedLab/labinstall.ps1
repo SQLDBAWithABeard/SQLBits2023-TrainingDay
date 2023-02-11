@@ -41,28 +41,28 @@ $SQLServers = @(
         IPAddress = '192.168.2.56'
     }
     @{
-        Role      = 'SQLServer2019'
+        Role      = 'SQLServer2019', 'FailoverNode'
         # Properties = @{InstallSampleDatabase = 'true' }
         Name      = 'Beard2019AG1'
         Memory    = 1GB
         IPAddress = '192.168.2.57'
     }
     @{
-        Role      = 'SQLServer2019'
+        Role      = 'SQLServer2019', 'FailoverNode'
         # Properties = @{InstallSampleDatabase = 'true' }
         Name      = 'Beard2019AG2'
         Memory    = 1GB
         IPAddress = '192.168.2.58'
     }
     @{
-        Role      = 'SQLServer2019'
+        Role      = 'SQLServer2019', 'FailoverNode'
         # Properties = @{InstallSampleDatabase = 'true' }
         Name      = 'Beard2019AG3'
         Memory    = 1GB
         IPAddress = '192.168.2.59'
     }
     @{
-        Role      = 'SQLServer2019'
+        Role      = 'SQLServer2019', 'FailoverNode'
         # Properties = @{InstallSampleDatabase = 'true' }
         Name      = 'Beard2019AG4'
         Memory    = 1GB
@@ -206,8 +206,14 @@ If ($LabDefinition.Machines | Where-Object { $_.Roles -like 'FileServer' -and $_
 }
 
 foreach ($SQLServer in $SQLServers) {
-    if ($LabDefinition.Machines | Where-Object { $_.Roles -like $SQLServer.Role -and $_.Name -eq $SQLServer.Name }) {} else {
+    if ($LabDefinition.Machines | Where-Object { $_.Roles -like $SQLServer.Role -and $_.Name -eq $SQLServer.Name }) {
+        Write-PsfMessage -level Output -Message ('All good for {0}' -f $SQLServer.Name)
+    } else {
         $role = Get-LabMachineRoleDefinition -Role $SQLServer.Role -Properties $SQLServer.Properties
+        if ( Get-LabMachineDefinition  -ComputerName $SQLServer.Name ) {
+            Write-PsfMessage -Level Output -Message ("Machine exists but roles don't match on {0}" -f $SqlServer.Name)
+            Remove-LabMachineDefinition -Name $SQLServer.Name
+        }
         Add-LabMachineDefinition -Name $SQLServer.Name -Memory $SQLServer.Memory -Roles $role -IpAddress $SQLServer.IPAddress
     }
 }
@@ -231,11 +237,10 @@ foreach ($GenericHost in $GenericBlankBoxes) {
 
 
 Install-Lab -Verbose
-Install-Lab -Verbose
 
 Show-LabDeploymentSummary -Detailed
 
-# add inbound firewall rule for TCP 1433 and remote management
+# add inbound firewall rule for TCP 1433, 5022 and remote management
 foreach ($Machine in $AllMachines) {
     $ActivityName = "firewall rules for {0}" -f $Machine.Name
     Invoke-LabCommand -FilePath .\Environment\AutomatedLab\AllMachines\firewall.ps1 -ComputerName $Machine.Name -DoNotUseCredSsp -ActivityName $ActivityName
@@ -250,7 +255,6 @@ foreach ($SQLServer in $SQLServers) {
     $ActivityName = "SQL Start for {0}" -f $SQLServer.Name
     Invoke-LabCommand -FilePath .\Environment\AutomatedLab\AllMachines\startsql.ps1 -ComputerName $SQLServer.Name -DoNotUseCredSsp -ActivityName $ActivityName
 }
-
 
 foreach ($VM in @($DemoMachine, $CLientVM)) {
 
