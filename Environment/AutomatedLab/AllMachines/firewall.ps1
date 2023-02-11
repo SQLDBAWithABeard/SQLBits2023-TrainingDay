@@ -1,5 +1,6 @@
 
 $FirewallGroups = @( 'Remote Desktop', 'Remote Event Log Management', 'Remote Service Management' )
+$FirewallNames = @( 'File and Printer Sharing (Echo Request - ICMPv4-in)' )
 
 $FireWallsConfig = @(
     @{DisplayName = 'SQL Server'
@@ -13,6 +14,18 @@ $FireWallsConfig = @(
         LocalPort = '5022'
     }
 )
+
+foreach ($FirewallName in $FirewallNames) {
+    try {
+        Get-NetFirewallRule -DisplayName $FirewallName -Enabled true -ErrorAction Stop | Out-Null
+        $message = "{1} Already got {0}" -f $FirewallName , $Env:COMPUTERNAME
+        Write-Host  $message
+    } catch {
+        $message = "{1} Need to set {0}" -f $FirewallName , $Env:COMPUTERNAME
+        Write-Host $message
+        Set-NetFirewallRule -DisplayName $FirewallName -Enabled true -PassThru | Out-Null
+    }
+}
 
 foreach ($FirewallGroup in $FirewallGroups) {
     try {
