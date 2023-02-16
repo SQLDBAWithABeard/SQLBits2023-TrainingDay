@@ -268,6 +268,7 @@ foreach ($VM in @($DemoMachine, $CLientVM)) {
     }
 }
 
+# sql setup
 Get-ChildItem .\Environment\AutomatedLab\SqlSetup -File | Sort-Object Name | ForEach-Object {
     $ActivityName = 'SQL Setup - {0}' -f ($_.Name -replace '.ps1', '' )
     Write-PSFMessage -Message $ActivityName -Level Output
@@ -276,7 +277,6 @@ Get-ChildItem .\Environment\AutomatedLab\SqlSetup -File | Sort-Object Name | For
 
 Invoke-LabCommand -FilePath .\Environment\AutomatedLab\fileserversetup.ps1 -ComputerName $FileServer -DoNotUseCredSsp -ActivityName 'FileServer'
 
-Invoke-LabCommand -FilePath .\Environment\AutomatedLab\SQLBackupsSetup.ps1 -ComputerName $DemoMachine -DoNotUseCredSsp -ActivityName 'SQLBackup Set up'
 
 Stop-LabVM -All
 

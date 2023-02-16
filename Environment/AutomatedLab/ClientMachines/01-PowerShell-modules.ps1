@@ -13,8 +13,10 @@ $modules = @(
     'Pester',
     'ImportExcel',
     'posh-git',
-    'Terminal-Icons'
+    'Terminal-Icons',
+    'kbupdate'
 )
+
 foreach ($module in $modules) {
     if ($module -eq 'Pester') {
         if ((Get-Module pester -ListAvailable | sort Version -Descending | select -First 1).Version.Major -ge 5) {

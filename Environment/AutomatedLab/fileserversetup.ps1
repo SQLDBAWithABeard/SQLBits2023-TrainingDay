@@ -3,6 +3,7 @@ $shareName = 'SQLBackups'
 $path = "E:\SQLBackups"
 $changeAccess = "jessandbeard\SQLgMSA$","jessandbeard\SQLAGgMSA$"
 $FullAccess = "jessandbeard\Domain Admins"
+$shared = '\\poshfs1\SQLBackups\Shared'  # for migrations and ags
 
 if(-not (Test-Path $path)) {
     Write-Host ('Creating the {0} folder' -f $path)
@@ -33,5 +34,9 @@ if(-not (Get-SmbShare -name $shareName)) {
     }
 }
 
+if(-not (Test-Path $shared)) {
+    Write-Host ('Creating the {0} folder' -f $shared)
+    New-Item -Path $shared -ItemType Directory -Force
+}
 
 # Copy-LabFileItem -Path F:\BackupShare\AdventureWorks_FULL_COPY_ONLY.bak -ComputerName POSHFS1 -DestinationFolderPath E:\SQLBackups
