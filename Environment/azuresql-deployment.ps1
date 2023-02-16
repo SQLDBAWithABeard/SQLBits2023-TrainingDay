@@ -89,6 +89,8 @@ foreach ($VMName in $VMNames[0..2]) {
     try {
         Get-AzSqlVM -Name $VMName -ResourceGroupName $resourceGroup -ErrorAction Stop
     } catch {
+        # Get the existing Compute VM
+        $vm = Get-AzVM -Name $VMName -ResourceGroupName $resourceGroup
 
         New-AzSqlVM -Name $VMName -ResourceGroupName $resourceGroup -Location $location -LicenseType PAYG -SqlManagementType Full
     }
@@ -118,7 +120,7 @@ $LoadBalancerConfig = @{
 New-AzLoadBalancer @LoadBalancerConfig
 
 $VMIds = foreach ($VMName in $VMNames) {
-        (Get-AzSQLVM -Name $VMName -ResourceGroupName $resourceGroup).ResourceId
+        (Get-AzSQLVM -Name $VMName -ResourceGroupName $resourceGroup).Id
 }
 
 $ListenerConfig = @{
