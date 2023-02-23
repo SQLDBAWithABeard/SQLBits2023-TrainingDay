@@ -14,7 +14,9 @@ $modules = @(
     'ImportExcel',
     'posh-git',
     'Terminal-Icons',
-    'kbupdate'
+    'kbupdate',
+    'Az.Storage',
+    'Az.Accounts'
 )
 
 foreach ($module in $modules) {
