@@ -23,3 +23,5 @@ choco install vscode.install -y
 
 choco install microsoft-windows-terminal -y
 choco install wsl2 -y
+choco install gh -y
+choco install podman-desktop -y
