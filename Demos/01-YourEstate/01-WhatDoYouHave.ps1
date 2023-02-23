@@ -3,7 +3,7 @@ Get-ADComputer -Filter * | Sort-Object Name | ForEach-Object { Resolve-DnsName -
 
 Find-DbaInstance -DiscoveryType All -OutVariable svrs
 
-Find-DbaInstance -DiscoveryType Domain -DomainController jessdc1
+Find-DbaInstance -DiscoveryType DomainSPN -DomainController jessdc1
 
 $AdComputerNames = (Get-adcomputer -Filter * ).Name
 
