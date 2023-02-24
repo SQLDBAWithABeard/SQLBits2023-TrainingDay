@@ -1,0 +1,23 @@
+# Demos
+
+- 01-YourEstate
+  - What do you have?
+    - Find-DbaInstance
+- 02-Patching
+  - Are our SQL Servers up-to date?
+  - Are our Windows servers up-to date?
+- 03-Migrations
+  - Small databases from sql2016 --> 2019/2022
+    - Maybe migrate to AG and include adding it into the AG
+  - Large database
+    - Full backup - show activity - differential\log backups to cutover
+    - Setup Log shipping and cut over
+- 04-HA/DR
+  - AG
+    - Add a replica, add databases, controlled failovers
+    - Simulate a node failure
+    - Managed Instance - 2022 --> MI --> 2022
+- Ongoing management of a large estate
+  - Configuring and managing SQL Server instances (e.g. using SQL Server Configuration Manager)
+  - Monitoring and troubleshooting SQL Server instances
+  - Encryption? connections\tde
