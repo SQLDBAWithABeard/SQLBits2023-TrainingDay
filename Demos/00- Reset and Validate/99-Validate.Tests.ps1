@@ -37,3 +37,22 @@ Describe "SQL servers should have 25 online databases" -Tag test {
         }
     }
 }
+
+Describe "Jess2017 should have pubs and titan databases online" -Tag test {
+    Context "Validating <_>" -ForEach 'Jess2017' {
+        It "<_> should have pubs and titan" -Tag Morning {
+            (Get-DbaDatabase -SqlInstance $_ -Database Pubs, Titan | Measure-Object ).Count | Should -Be 2
+        }
+        It "<_> should have pubs and titan online" -Tag Morning {
+            ( Get-DbaDatabase -SqlInstance $_ -Database Pubs, Titan | Where-Object Status -ne 'Normal') | Should -BeNullOrEmpty
+        }
+    }
+}
+
+Describe "Beard2019Ag1 should not have pubs and titan databases" -Tag test {
+    Context "Validating <_>" -ForEach 'Beard2019Ag1' {
+        It "<_> should not have pubs and titan" -Tag Morning {
+            Get-DbaDatabase -SqlInstance $_ -Database Pubs, Titan | Should -BeNullOrEmpty
+        }
+    }
+}
