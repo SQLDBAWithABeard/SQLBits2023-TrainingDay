@@ -9,7 +9,7 @@ switch ($eNV:computername) {
         $WindowsTerminalSettings | ConvertTo-Json -Depth 5 | Set-Content  $WindowsTerminalSettingsFile
     }
     PoshClient1 {
-        Write-Host "No Windows Termainal for you rotten server OS"
+        Write-Host "No Windows Terminal for you rotten server OS"
     }
 }
 
