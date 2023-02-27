@@ -101,7 +101,9 @@ function Load-Profile {
             'unicorn',
             'wholespace'
         )
-        Set-PoshPrompt -Theme (Get-Random -InputObject `$themes)
+        `$global:__currentTheme = (Get-Random -InputObject `$themes)
+        function global:Get-CurrentPoshTheme {`$__currentTheme}
+        Set-PoshPrompt -Theme `$__currentTheme 
     }
 
 
