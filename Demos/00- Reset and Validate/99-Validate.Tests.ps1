@@ -21,13 +21,13 @@ Describe "File share" {
 
 Describe "Jess2019 should be behind on a patch" {
     Context "Validating <_>" -ForEach @('Jess2019') {
-        It "<_> should be behind on a patch" -Tag Morning {
+        It "<_> should be behind on a patch" -Tag Morning  {
             (Test-DbaBuild -SqlInstance $_ -Latest).Compliant | Should -Be $false
         }
     }
 }
 
-Describe "SQL servers should have 25 online databases" -Tag test {
+Describe "SQL servers should have 25 online databases" {
     Context "Validating <_>" -ForEach $SQLServers {
         It "<_> should have 25 databases" -Tag Morning {
             ( Get-DbaDatabase -SqlInstance $_ -ExcludeSystem | Measure-Object ).Count | Should -Be 25
@@ -38,7 +38,7 @@ Describe "SQL servers should have 25 online databases" -Tag test {
     }
 }
 
-Describe "Jess2017 should have pubs and titan databases online" -Tag test {
+Describe "Jess2017 should have pubs and titan databases online" {
     Context "Validating <_>" -ForEach 'Jess2017' {
         It "<_> should have pubs and titan" -Tag Morning {
             (Get-DbaDatabase -SqlInstance $_ -Database Pubs, Titan | Measure-Object ).Count | Should -Be 2
@@ -49,7 +49,7 @@ Describe "Jess2017 should have pubs and titan databases online" -Tag test {
     }
 }
 
-Describe "Beard2019Ag1 should not have pubs and titan databases" -Tag test {
+Describe "Beard2019Ag1 should not have pubs and titan databases" {
     Context "Validating <_>" -ForEach 'Beard2019Ag1' {
         It "<_> should not have pubs and titan" -Tag Morning {
             Get-DbaDatabase -SqlInstance $_ -Database Pubs, Titan | Should -BeNullOrEmpty
