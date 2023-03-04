@@ -17,7 +17,7 @@ Format-Table SqlInstance, BuildLevel, BuildTarget, SupportedUntil, Compliant
 $kb = 'KB5023049' # SQL Server 2019 RTM Cumulative Update (CU) 19 KB5023049
 
 # KB5023363 - Get information about the update
-Get-KbUpdate -Name $kb -Simple
+Get-KbUpdate -Name $kb -Simple | Format-List
 
 # Patch the computer with the needed updates - 15mins to install
 Install-KbUpdate -ComputerName Jess2019 -HotfixId $kb -Verbose
@@ -32,7 +32,7 @@ Get-KbInstalledUpdate -ComputerName Jess2019 -Name $kb
 Test-DbaBuild -SqlInstance jess2016,jess2017,jess2019 -Latest |
 Format-Table SqlInstance, BuildLevel, BuildTarget, SupportedUntil, Compliant
 
-# Actually uninstall the update
+# Actually uninstall the update - ~10mins
 Uninstall-KbUpdate -ComputerName Jess2019 -Name $kb -Verbose
 
 <#
@@ -49,5 +49,5 @@ VERBOSE: [08:50:42][Start-JobProcess] Finished installing updates on Jess2019
 Restart-Computer -ComputerName Jess2019 -Force -Wait
 
 # Also see this with dbatools - we're no longer compliant
-Test-DbaBuild -SqlInstance jess2016,jess2017,jess2019 -Latest |
+Test-DbaBuild -SqlInstance jess2019 -Latest |
 Format-Table SqlInstance, BuildLevel, BuildTarget, SupportedUntil, Compliant
