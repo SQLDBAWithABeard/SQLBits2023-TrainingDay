@@ -56,3 +56,22 @@ Describe "Beard2019Ag1 should not have pubs and titan databases" {
         }
     }
 }
+
+Describe "Beard2019Ag4 should not be in the ag" {
+    Context "Validating <_>" -ForEach 'Beard2019Ag4' {
+        It "<_> should not have hadr feature enabled" -Tag Morning, test {
+            (Get-DbaAgHadr -SqlInstance $_).IsHadrEnabled | Should -Be $false
+        }
+        It "<_> should not be part of DragonAg" -Tag Morning, test {
+            (Get-DbaAgReplica -SqlInstance dragonlist -AvailabilityGroup DragonAg).Name | Should -Not -Contain 'Beard2019Ag4'
+        }
+    }
+}
+
+Describe "Jess2017.Titan should not have a NewTable" {
+    Context "Validating <_>" -ForEach 'Jess2017' {
+        It "<_> should not have a table named NewTable" -Tag Morning,test {
+            Get-DbaDbTable -SqlInstance $_ -Database Titan -Table NewTable | Should -BeNullOrEmpty
+        }
+    }
+}
