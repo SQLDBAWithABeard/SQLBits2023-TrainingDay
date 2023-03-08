@@ -15,6 +15,7 @@ $pubsSplat = @{
     SqlInstance       = 'Beard2019AG1'
     AvailabilityGroup = 'DragonAg'
     Database          = 'pubs'
+    SeedingMode       = 'Automatic'
 }
 Add-DbaAgDatabase @pubsSplat
 
@@ -28,6 +29,7 @@ $recoverySplat = @{
     SqlInstance       = 'Beard2019AG1'
     Database          = 'pubs'
     RecoveryModel     = 'Full'
+    Confirm           = $false
 }
 Set-DbaDbRecoveryModel @recoverySplat
 
@@ -36,6 +38,7 @@ $pubsSplat = @{
     SqlInstance       = 'Beard2019AG1'
     AvailabilityGroup = 'DragonAg'
     Database          = 'pubs'
+    SeedingMode       = 'Automatic'
 }
 Add-DbaAgDatabase @pubsSplat
 
@@ -59,6 +62,7 @@ $pubsSplat = @{
     SqlInstance       = 'Beard2019AG1'
     AvailabilityGroup = 'DragonAg'
     Database          = 'pubs'
+    SeedingMode       = 'Automatic'
 }
 Add-DbaAgDatabase @pubsSplat
 
@@ -83,12 +87,16 @@ $titanSplat = @{
 }
 Add-DbaAgDatabase @titanSplat
 
+# Lets check on our databases
+Get-DbaDatabase -SqlInstance beard2019ag1, beard2019ag2, beard2019ag3 -Database Titan |
+Select-Object SqlInstance, Name, Status, SizeMB, IsAccessible |
+Format-Table
+
 # Add another replica
 $agSplat = @{
     SqlInstance       = 'Beard2019AG1'
     AvailabilityGroup = 'DragonAg'
 }
-
 Get-DbaAvailabilityGroup @agSplat |
 Add-DbaAgReplica -SqlInstance Beard2019AG4 -FailoverMode Manual
 
@@ -101,13 +109,14 @@ Get-DbaAgHadr -SqlInstance Beard2019AG4 | Format-List
 # Enable the feature - force means restart!
 Enable-DbaAgHadr -SqlInstance Beard2019AG4 -Force
 
-# Enable the feature - force means restart!
-# Disable-DbaAgHadr -SqlInstance Beard2019AG4 -Force
-
-
 # clear up the first attempt
 Remove-DbaAgReplica @agSplat -Replica Beard2019AG4 -Confirm:$false
 
 # and...
 Get-DbaAvailabilityGroup @agSplat |
-Add-DbaAgReplica -SqlInstance Beard2019AG4 -verbose -ClusterType Wsfc -FailoverMode manual -SeedingMode Automatic
+Add-DbaAgReplica -SqlInstance Beard2019AG4 -ClusterType Wsfc -FailoverMode manual -SeedingMode Automatic
+
+Get-DbaAgDatabase -SqlInstance Beard2019AG4 -AvailabilityGroup DragonAg |
+Select-Object SqlInstance, Name, SynchronizationState, IsJoined, IsSuspended |
+Format-Table
+
