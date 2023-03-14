@@ -9,10 +9,13 @@
 ##################################################################################
 
 # Let's see what databases we have available here
-Get-DbaDatabase -SqlInstance Jess2017, Beard2019Ag1 -ExcludeSystem | Select-Object SqlInstance, Name, Status, SizeMB
+Get-DbaDatabase -SqlInstance Jess2017, Beard2019Ag1 -ExcludeSystem |
+Select-Object SqlInstance, Name, Status, SizeMB |
+Format-Table -Autosize
 
-# Lets focus on pubs and GoGoGo
-Get-DbaDatabase -SqlInstance Jess2017, Beard2019Ag1 -Database pubs, Titan | Select-Object SqlInstance, Name, Status, SizeMB
+# Lets focus on pubs and Titan
+Get-DbaDatabase -SqlInstance Jess2017, Beard2019Ag1 -Database pubs, Titan |
+Select-Object SqlInstance, Name, Status, SizeMB
 
 ##################################
 ## METHOD 1 - Stage Full backup ##
@@ -35,13 +38,16 @@ Copy-DbaDatabase @copySplat
 $CopyResults | Select-Object *
 
 # How are our databases looking now?
-Get-DbaDatabase -SqlInstance jess2017, beard2019ag1 -Database pubs, Titan | Select-Object SqlInstance, Name, Status, SizeMB
+Get-DbaDatabase -SqlInstance jess2017, beard2019ag1 -Database pubs, Titan |
+Select-Object SqlInstance, Name, Status, SizeMB
 
 #################################
 ## DOWNTIME WINDOWS STARTS NOW ##
 #################################
 # App team will stop the app running...
+# JESS THAT'S YOU!
 
+# Let's see what processes are running
 $processSplat = @{
     SqlInstance = 'Jess2017', 'Beard2019Ag1'
     Database    = 'Pubs'
@@ -53,7 +59,13 @@ Select-Object Host, login, Program
 Get-DbaProcess @processSplat | Stop-DbaProcess
 
 # What's our newest order?
-Invoke-DbaQuery -SqlInstance Jess2017 -Database Pubs -Query 'select @@servername AS [SqlInstance], count(*)NumberOfOrders, max(ord_date) as NewestOrder from pubs.dbo.sales' -OutVariable 'sourceSales'
+$querySplat = @{
+    SqlInstance = 'Jess2017'
+    Database    = 'Pubs'
+    Query       = 'select @@servername AS [SqlInstance], count(*)NumberOfOrders, max(ord_date) as NewestOrder from pubs.dbo.sales'
+    OutVariable = 'sourceSales'
+}
+Invoke-DbaQuery @querySplat
 
 # Remember the date from our full backup!
 $CopyResults | Select-Object *
@@ -77,7 +89,8 @@ $offlineSplat = @{
 Set-DbaDbState @offlineSplat
 
 # How are our databases looking now?
-Get-DbaDatabase -SqlInstance jess2017, beard2019ag1 -Database pubs, Titan | Select-Object SqlInstance, Name, Status, SizeMB
+Get-DbaDatabase -SqlInstance jess2017, beard2019ag1 -Database pubs, Titan |
+Select-Object SqlInstance, Name, Status, SizeMB
 
 # restore the differential and bring the destination online
 $restoreSplat = @{
@@ -89,10 +102,17 @@ $restoreSplat = @{
 Restore-DbaDatabase @restoreSplat
 
 # Let's check on our databases
-Get-DbaDatabase -SqlInstance jess2017, beard2019ag1 -Database pubs, Titan | Select-Object SqlInstance, Name, Status, SizeMB
+Get-DbaDatabase -SqlInstance jess2017, beard2019ag1 -Database pubs, Titan |
+Select-Object SqlInstance, Name, Status, SizeMB
 
 # Let's check our data
-Invoke-DbaQuery -SqlInstance beard2019ag1 -Database Pubs -Query 'select @@servername AS [SqlInstance], count(*)NumberOfOrders, max(ord_date) as NewestOrder from pubs.dbo.sales' -OutVariable 'destSales'
+$querySplat = @{
+    SqlInstance = 'beard2019ag1'
+    Database    = 'Pubs'
+    Query       = 'select @@servername AS [SqlInstance], count(*)NumberOfOrders, max(ord_date) as NewestOrder from pubs.dbo.sales'
+    OutVariable = 'destSales'
+}
+Invoke-DbaQuery @querySplat
 
 # Compare these dates and orders
 $sourceSales, $destSales
@@ -110,19 +130,24 @@ $logship = @{
 }
 Invoke-DbaDbLogShipping @logship
 
+# https://jesspomfret.com/log-shipping-pre-stage/
+
 # Let's check on our databases
-Get-DbaDatabase -SqlInstance jess2017, beard2019ag1 -Database pubs, Titan | Select-Object SqlInstance, Name, Status, SizeMB
+Get-DbaDatabase -SqlInstance jess2017, beard2019ag1 -Database pubs, Titan |
+Select-Object SqlInstance, Name, Status, SizeMB
 
 # With log shipping jobs?
-Get-DbaAgentJob -SqlInstance jess2017, beard2019ag1 -Category 'Log Shipping' | Select-Object SqlInstance, Name, LastRunDate, LastRunOutcome, NextRunDate | Format-Table
+Get-DbaAgentJob -SqlInstance jess2017, beard2019ag1 -Category 'Log Shipping' |
+Select-Object SqlInstance, Name, LastRunDate, LastRunOutcome, NextRunDate |
+Format-Table
 
 # lets run the backup then the copy then the restpre
-Start-DbaAgentJob -SqlInstance jess2017 -Job 'LSBackup_Titan'
-Start-Sleep -Seconds 5
-Start-DbaAgentJob -SqlInstance beard2019ag1 -Job 'LSCopy_Jess2017_Titan'
-Start-Sleep -Seconds 5
-Start-DbaAgentJob -SqlInstance beard2019ag1 -Job 'LSRestore_Jess2017_Titan'
-Start-Sleep -Seconds 5
+Start-DbaAgentJob -SqlInstance jess2017 -Job 'LSBackup_Titan' -Wait
+Start-Sleep -Seconds 1
+Start-DbaAgentJob -SqlInstance beard2019ag1 -Job 'LSCopy_Jess2017_Titan' -Wait
+Start-Sleep -Seconds 1
+Start-DbaAgentJob -SqlInstance beard2019ag1 -Job 'LSRestore_Jess2017_Titan' -Wait
+Start-Sleep -Seconds 1
 
 # review those log shipping jobs
 Get-DbaAgentJob -SqlInstance jess2017, beard2019ag1 -Category 'Log Shipping' |
@@ -139,14 +164,20 @@ INSERT INTO NewTable (Name) VALUES ('Jess')
 Invoke-DbaQuery -SqlInstance Jess2017 -Database Titan -Query $query
 
 # Lets see the data
-Invoke-DbaQuery -SqlInstance Jess2017 -Database Titan -Query 'SELECT * FROM NewTable'
+$selectSplat = @{
+    SqlInstance = 'Jess2017'
+    Database    = 'Titan'
+    Query       = 'SELECT * FROM NewTable'
+}
+Invoke-DbaQuery @selectSplat
 
 # Run the log shipping jobs again
-Start-DbaAgentJob -SqlInstance jess2017 -Job 'LSBackup_Titan'
-Start-Sleep -Seconds 5
-Start-DbaAgentJob -SqlInstance beard2019ag1 -Job 'LSCopy_Jess2017_Titan'
-Start-Sleep -Seconds 5
-Start-DbaAgentJob -SqlInstance beard2019ag1 -Job 'LSRestore_Jess2017_Titan'
+Start-DbaAgentJob -SqlInstance jess2017 -Job 'LSBackup_Titan' -Wait
+Start-Sleep -Seconds 1
+Start-DbaAgentJob -SqlInstance beard2019ag1 -Job 'LSCopy_Jess2017_Titan' -Wait
+Start-Sleep -Seconds 1
+Start-DbaAgentJob -SqlInstance beard2019ag1 -Job 'LSRestore_Jess2017_Titan' -Wait
+Start-Sleep -Seconds 1
 
 # review those log shipping jobs
 Get-DbaAgentJob -SqlInstance jess2017, beard2019ag1 -Category 'Log Shipping' |
@@ -155,7 +186,12 @@ Sort-Object LastRunDate |
 Format-Table
 
 # Lets cutover
-Invoke-DbaDbLogShipRecovery -SqlInstance beard2019ag1 -Database Titan
+$cutoverSplat = @{
+    SqlInstance = 'beard2019ag1'
+    Database    = 'Titan'
+
+}
+Invoke-DbaDbLogShipRecovery @cutoverSplat
 
 # review those log shipping jobs
 Get-DbaAgentJob -SqlInstance jess2017, beard2019ag1 -Category 'Log Shipping' |
@@ -164,11 +200,8 @@ Sort-Object LastRunDate |
 Format-Table
 
 # Lets check on our databases
-Get-DbaDatabase -SqlInstance jess2017, beard2019ag1 -Database pubs, Titan | Select-Object SqlInstance, Name, Status, SizeMB
+Get-DbaDatabase -SqlInstance jess2017, beard2019ag1 -Database pubs, Titan |
+Select-Object SqlInstance, Name, Status, SizeMB
 
 # Lets see the data
 Invoke-DbaQuery -SqlInstance Beard2019Ag1 -Database Titan -Query 'SELECT * FROM NewTable'
-
-# reset stuff
-Set-DbaDbState -SqlInstance Jess2017 -Database Pubs, Titan -Online -Force
-Remove-DbaDatabase -SqlInstance beard2019ag1 -Database Pubs, Titan -Confirm:$false

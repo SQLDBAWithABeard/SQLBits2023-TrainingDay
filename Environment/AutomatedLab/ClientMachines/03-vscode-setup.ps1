@@ -103,7 +103,7 @@ function Load-Profile {
         )
         `$global:__currentTheme = (Get-Random -InputObject `$themes)
         function global:Get-CurrentPoshTheme {`$__currentTheme}
-        Set-PoshPrompt -Theme `$__currentTheme 
+        Set-PoshPrompt -Theme `$__currentTheme
     }
 
 
@@ -145,8 +145,9 @@ function Start-Demo {
     Write-PSfMessage -Level Significant -Message "Starting The Good Stuff"
     `$repo = 'C:\TheGoodStuff'
     Set-Location `$repo
-    git clone https://github.com/SQLDBAWithABeard/SQLBits2023-TrainingDay.git
-    Set-Location `$repo\SQLBits2023-TrainingDay
+    if(-not (Test-path `$repo\SQLBits2023-TrainingDay)) {
+        git clone https://github.com/SQLDBAWithABeard/SQLBits2023-TrainingDay.git
+    }    Set-Location `$repo\SQLBits2023-TrainingDay
     git pull
     code `$repo\SQLBits2023-TrainingDay
 }
